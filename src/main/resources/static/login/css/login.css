@@ -1,0 +1,17 @@
+body {
+    background: url("../../image/b2f62f2187c904ffcaed90ba342f984d.jpg");
+    background-size: cover;
+}
+
+.button-register {
+    width: 30%;
+    margin-right: 0;
+
+}
+
+.register-window {
+    background-color: rgb(255, 255, 255, 0.7);
+    margin-top: 9%;
+    padding: 4% 4% 2% 2%;
+    border-radius: 20px;
+}
