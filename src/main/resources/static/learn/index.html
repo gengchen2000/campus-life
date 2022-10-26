@@ -4,12 +4,28 @@
     <meta charset="UTF-8">
     <title>js学习</title>
 </head>
+<style>
+    .box {
+        height: 100px;
+        background-color: yellow;
+
+    }
+</style>
 <body>
 <div class="d1"></div>
-<div class="d2"></div>
+<div class="d1"></div>
 <div id="d3"></div>
 </body>
 <script type="text/javascript">
+    var element = document.getElementById('d3');
+    console.log(element)
+    /*获取元素的所有样式*/
+    element.style
+    /*获取html的*/
+    element.innerHTML = '我是一个div'
+    /*获取的是数组*/
+    var elementsByClassName = document.getElementsByClassName('d1');
+
     /*弹窗*/
     // alert("Hello World!")
     /*控制台输出*/
@@ -33,5 +49,60 @@
     // console.log(i)
     // let i = 1;
     // let i = '你好'
+    // const i = 1;
+    /*json*/
+    // var person = {
+    //     id: 1,
+    //     name: "张三",
+    //     age: 20
+    // }
+    //
+    // /*获取值*/
+    // console.log(person.name);
+    // console.log(person['name']);
+    // /*赋值*/
+    // person.name = '李四';
+    // /*给他一个不存在的属性赋值*/
+    // person.username = 'lisi'
+
+    // var arr = [1, 2, '张三', false];
+    // arr[4] = true
+    /*放入元素*/
+    // arr.push('李四')
+    // console.log(arr)
+    // console.log(arr)
+    // // 获取方式 下标(从0开始)
+    // console.log('第三个元素的值:' + arr[2])
+    // console.log('元素的长度' + arr.length);
+    // var arr2 = [2, 4, 5];
+    /*数组的合并*/
+    // arr = arr.concat(arr2)
+    // console.log(arr)
+    /*取元素*/
+    // console.log(arr.pop());
+    // console.log(arr)
+    // Object.assign()
+    // 数组的遍历
+    // for (let i = 0; i < arr.length; i++) {
+    //     console.log(arr[i])
+    // }
+    // for (let arrElement of arr) {
+    //     console.log(arrElement)
+    // }
+    // /*对象的遍历*/
+    // for (let key in person) {
+    //     console.log('key  ' + key)
+    //     console.log('当前key的值 ' + person[key])
+    //     if (key === 'name') {
+    //         delete person[key]
+    //     }
+    // }
+
+
+
+
+
+
+
 </script>
 </html>
