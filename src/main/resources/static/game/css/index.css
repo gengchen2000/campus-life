@@ -1,13 +1,14 @@
 .main-style {
     background-color: pink;
     height: 700px;
-    margin-top: 90px;
+    /*margin-top: 90px;*/
 }
 
 .second-style {
     height: 100px;
     width: 100px;
     background-color: #ec971f;
+    position: relative;
 }
 
 .parent-style {
