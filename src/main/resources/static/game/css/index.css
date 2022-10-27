@@ -9,6 +9,7 @@
     width: 100px;
     background-color: #ec971f;
     position: relative;
+    border-radius: 10px;
 }
 
 .parent-style {
