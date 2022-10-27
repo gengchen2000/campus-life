@@ -12,19 +12,44 @@
     }
 </style>
 <body>
-<div class="d1"></div>
-<div class="d1"></div>
-<div id="d3"></div>
+<!--点击触发-->
+<button onclick="show()">点击触发</button>
+<!--鼠标移入触发-->
+<button onmousemove="show()">鼠标移入触发</button>
+<!--鼠标移入触发-->
+<button onmouseout="show()">鼠标移出触发</button>
+<!--鼠标点击触发-->
+<button onmousedown="show()">鼠标点击触发</button>
+<!--鼠标点击触发-->
+<button onmouseup="show()">鼠标点击结束触发</button>
+
 </body>
 <script type="text/javascript">
-    var element = document.getElementById('d3');
-    console.log(element)
-    /*获取元素的所有样式*/
-    element.style
-    /*获取html的*/
-    element.innerHTML = '我是一个div'
-    /*获取的是数组*/
-    var elementsByClassName = document.getElementsByClassName('d1');
+
+
+    // show()
+
+    function show(val1, val2) {
+        console.log(val1)
+        // alert('欢迎来到校园生活!')
+    }
+
+    var x = function () {
+        alert('欢迎来到校园生活!')
+    }
+
+
+
+
+
+    // var element = document.getElementById('d3');
+    // console.log(element)
+    // /*获取元素的所有样式*/
+    // element.style
+    // /*获取html的*/
+    // element.innerHTML = '我是一个div'
+    // /*获取的是数组*/
+    // var elementsByClassName = document.getElementsByClassName('d1');
 
     /*弹窗*/
     // alert("Hello World!")
