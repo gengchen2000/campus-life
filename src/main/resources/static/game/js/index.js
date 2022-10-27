@@ -3,6 +3,8 @@ var box = document.getElementById('box');
 var leftNumber = 0
 var topNumber = 0
 
+var n = 40
+
 
 function changeGreen() {
     box.style.backgroundColor = '#449d44'
@@ -13,21 +15,21 @@ function changeYellowOrange() {
 }
 
 function runTop() {
-    topNumber -= 4
+    topNumber -= n
     box.style.top = topNumber + 'px'
 }
 
 function runBottom() {
-    topNumber += 4
+    topNumber += n
     box.style.top = topNumber + 'px'
 }
 
 function runRight() {
-    leftNumber += 4
+    leftNumber += n
     box.style.left = leftNumber + 'px'
 }
 
 function runLeft() {
-    leftNumber -= 4
+    leftNumber -= n
     box.style.left = leftNumber + 'px'
 }
