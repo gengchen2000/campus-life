@@ -1,9 +1,11 @@
-var box = document.getElementById('box');
+const box = document.getElementById('box');
 
-var leftNumber = 0
-var topNumber = 0
+let leftNumber = 0;
+let topNumber = 0;
 
-var n = 40
+let interval;
+
+const n = 8;
 
 
 function changeGreen() {
@@ -14,22 +16,36 @@ function changeYellowOrange() {
     box.style.backgroundColor = '#ec971f'
 }
 
-function runTop() {
-    topNumber -= n
-    box.style.top = topNumber + 'px'
+function run(type) {
+    switch (type) {
+        case 'L':
+            interval = setInterval(function () {
+                leftNumber -= n
+                box.style.left = leftNumber + 'px'
+            }, 10)
+            break
+        case 'R':
+            interval = setInterval(function () {
+                leftNumber += n
+                box.style.left = leftNumber + 'px'
+            }, 10)
+            break
+        case 'B':
+            interval = setInterval(function () {
+                topNumber += n
+                box.style.top = topNumber + 'px'
+            }, 10)
+            break
+        case 'T':
+            interval = setInterval(function () {
+                topNumber -= n
+                box.style.top = topNumber + 'px'
+            }, 10)
+            break
+    }
 }
 
-function runBottom() {
-    topNumber += n
-    box.style.top = topNumber + 'px'
-}
 
-function runRight() {
-    leftNumber += n
-    box.style.left = leftNumber + 'px'
-}
-
-function runLeft() {
-    leftNumber -= n
-    box.style.left = leftNumber + 'px'
+function outInterval() {
+    clearInterval(interval)
 }
