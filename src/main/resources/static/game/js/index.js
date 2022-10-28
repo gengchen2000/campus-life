@@ -31,8 +31,8 @@ function run(type) {
             interval = setInterval(function () {
                 leftNumber -= n
                 box.style.left = leftNumber + 'px'
-            }, 0.1)
-            break
+            }, 0.1);
+            break;
         case 'R':
             interval = setInterval(function () {
                 leftNumber += n

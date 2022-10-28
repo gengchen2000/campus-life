@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>vue练习</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <script src="js/vue.min.js"></script>
+</head>
+<body>
+<div id="root">
+    <!--插值语法 写的是表达式-->
+    <!--    <div>{{message}}</div>-->
+    <!--    <div>对这个字符串进行截取:{{message.substring(1, 4)}}</div>-->
+    <!--    <div>a + b = {{a + b}}</div>-->
+    <!--    v-html改变标签html的值-->
+    <!--    <div v-html="'a + b = '+ (a + b)"></div>-->
+    <!--    <div v-bind:id="id"></div>-->
+    <!--    &lt;!&ndash;v-bind:class后面可以跟数组, 单个string对象&ndash;&gt;-->
+    <!--    <div v-bind:class="[c1, id]"></div>-->
+
+    <!--    <div v-bind:class="{'c1': use, 'c2': use, 'c3': notUse}"></div>-->
+
+    <!--    <a v-bind:href="url" target="_blank">百度</a>-->
+
+    <!--    &lt;!&ndash;   v-on:click 点击事件 &ndash;&gt;-->
+    <!--    <button v-on:click="show">弹窗展示</button>-->
+    <!--    <div>这个message的值是: {{message}}</div>-->
+    <!--    <label for="i1">-->
+    <!--        请输入message的值:<input id="i1" type="text" v-model="message"/>-->
+    <!--    </label>-->
+    <!--    <div v-if="notUse">{{message}}</div>-->
+    <!--    &lt;!&ndash;    一个if对应这一个else或else if&ndash;&gt;-->
+    <!--    <div v-else-if="notUse">这是else if</div>-->
+    <!--    <div v-else>message不可见</div>-->
+
+    <!--    <div v-if="1 === 2">表达式为true</div>-->
+    <!--    <div v-else>表达式为false</div>-->
+
+    <!--    <div v-if="type === 'A'">A</div>-->
+    <!--    <div v-else-if="type === 'B'">B</div>-->
+    <!--    <div v-else>C</div>-->
+
+    <!-- 循环 -->
+    <!--    <div>-->
+    <!--        <div v-for="person in list">-->
+    <!--            这个人的姓名是: {{person}}-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--        <div v-for="(person, key) in list">-->
+    <!--            这个人的姓名是: {{person}}, key的值是: {{key}}-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--        <div v-for="(person, key) in listPeron">-->
+    <!--            这个人的id是: {{person.id}}, 这个人的姓名是: {{person.name}}-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--        <div v-for="(value, key) in person">-->
+    <!--            key的值是{{key}}  value的值是{{value}}-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--        <div v-for="number in 10">-->
+    <!--            {{number - 1}}-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    <table class="table table-striped">-->
+    <!--        <tr>-->
+    <!--            <td>key</td>-->
+    <!--            <td>id</td>-->
+    <!--            <td>name</td>-->
+    <!--        </tr>-->
+    <!--        <tr v-for="(person, key) in listPeron">-->
+    <!--            <td v-bind:class="classStyle[key % 3]">{{key}}</td>-->
+    <!--            <td v-bind:class="classStyle[key % 3]">{{person.id}}</td>-->
+    <!--            <td v-bind:class="classStyle[key % 3]">{{person.name}}</td>-->
+    <!--        </tr>-->
+    <!--    </table>-->
+
+    <div>{{message}}</div>
+    <!--    计算属性的值不能被修改-->
+    <div>{{computedDemo}}</div>
+</div>
+</body>
+<script type="text/javascript">
+    let vm = new Vue({
+        el: '#root',
+        data: {
+            message: "这是一个div",
+            a: 1,
+            b: 2,
+            id: 'd1',
+            c1: 'c11',
+            use: true,
+            notUse: false,
+            url: 'https://www.baidu.com/',
+            type: 'A',
+            list: [
+                "张三",
+                "李四",
+                "王五"
+            ],
+            listPeron: [
+                {
+                    id: 1,
+                    name: "张三"
+                }, {
+                    id: 2,
+                    name: "李四"
+                }, {
+                    id: 3,
+                    name: "王五"
+                },
+            ],
+            person: {
+                id: 1,
+                name: "张三",
+                age: 20
+            },
+            classStyle: [
+                'success',
+                'warning',
+                'info'
+            ]
+        },
+        methods: {
+            show() {
+                alert('这是一个show方法!')
+            }
+        },
+        computed: {
+            computedDemo: function () {
+                return '这个message的值是:' + this.message
+            }
+        }
+    })
+    // debugger
+    console.log(vm)
+    // vm.message = '这个div的值被修改了'
+</script>
+</html>
