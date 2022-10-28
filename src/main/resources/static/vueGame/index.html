@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>small game</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link rel="stylesheet" href="../game/css/index.css">
+    <script src="../vue/js/vue.min.js"></script>
+</head>
+<body>
+<div class="container-fluid" id="root">
+    <div class="col-md-2">
+        <label for="i1">
+            <input type="text" id="i1" v-model="n">
+        </label>
+    </div>
+    <div class="col-md-8">
+        <div class="main-style">
+            <div class="second-style" v-bind:style="boxStyle" id="box"></div>
+        </div>
+        <div>
+            <!--颜色按钮-->
+            <div class="col-md-6 parent-style height-style">
+                <button type="button" class="btn btn-success child-style">绿色</button>
+                <button type="button" class="btn btn-warning child-style">橙黄色</button>
+            </div>
+            <!--方向按钮-->
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4 btn btn-info" @click="topNumber -= n">上</div>
+                    <div class="col-md-4"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 btn btn-info" @click="leftNumber -= n">左</div>
+                    <div class="col-md-4 btn btn-info" @click="topNumber += n">下</div>
+                    <div class="col-md-4 btn btn-info" @click="leftNumber += n">右</div>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+<div class="progress" style="margin-top: 50px">
+    <div id="p1" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+        <span class="sr-only"></span>
+    </div>
+</div>
+</body>
+<script src="js/index.js" type="text/javascript"></script>
+</html>
