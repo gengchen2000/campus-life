@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>vue练习</title>
@@ -34,12 +34,15 @@
     <!--    <div v-else-if="notUse">这是else if</div>-->
     <!--    <div v-else>message不可见</div>-->
 
-    <!--    <div v-if="1 === 2">表达式为true</div>-->
+    <div v-if="1 === 2">表达式为true</div>
     <!--    <div v-else>表达式为false</div>-->
 
     <!--    <div v-if="type === 'A'">A</div>-->
     <!--    <div v-else-if="type === 'B'">B</div>-->
     <!--    <div v-else>C</div>-->
+
+
+    <!--    <div v-show="false">v-show模板指令</div>-->
 
     <!-- 循环 -->
     <!--    <div>-->
@@ -80,9 +83,22 @@
     <!--        </tr>-->
     <!--    </table>-->
 
+    <!--    <div>{{message}}</div>-->
+    <!--    &lt;!&ndash;    计算属性的值不能被修改&ndash;&gt;-->
+    <!--    <div>{{computedDemo}}</div>-->
+<!--    <div>{{a}}</div>-->
+<!--    <button v-on:click="a += 1">a+1</button>-->
+<!--    <button v-on:click="show('A')">调用show方法</button>-->
+
+
+<!--    v-on的简写 @-->
+    <button @click="show">调用show方法</button>
+
+    <label>
+        <input type="text" v-model="message">
+    </label>
     <div>{{message}}</div>
-    <!--    计算属性的值不能被修改-->
-    <div>{{computedDemo}}</div>
+
 </div>
 </body>
 <script type="text/javascript">
@@ -127,14 +143,19 @@
             ]
         },
         methods: {
-            show() {
-                alert('这是一个show方法!')
+            show(value) {
+                alert('这个value的值是:' + value)
             }
         },
         computed: {
             computedDemo: function () {
                 return '这个message的值是:' + this.message
             }
+        },
+        watch: {
+            a(newValue, oldValue) {
+                alert('a原来的值是:' +oldValue + ' 修改后的值是:' + newValue)
+            },
         }
     })
     // debugger
