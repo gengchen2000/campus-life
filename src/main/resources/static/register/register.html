@@ -17,26 +17,29 @@
             <div class="form-group">
                 <label for="username" class="col-sm-2 control-label">用户名</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="username" v-model="userInfo.username" placeholder="用户名">
+                    <input type="text" class="form-control" id="username" v-model="userInfo.username"
+                           placeholder="用户名">
                 </div>
             </div>
             <div class="form-group">
                 <label for="password" class="col-sm-2 control-label">密码</label>
                 <div class="col-sm-10">
-                    <input type="password" class="form-control" id="password" v-model="userInfo.password" placeholder="密码">
+                    <input type="password" class="form-control" id="password" v-model="userInfo.password"
+                           placeholder="密码">
                 </div>
             </div>
             <div class="form-group">
                 <label for="passwordAgain" class="col-sm-2 control-label">确认密码</label>
                 <div class="col-sm-10">
-                    <input type="password" class="form-control" id="passwordAgain" placeholder="确认密码">
+                    <input type="password" class="form-control" id="passwordAgain" v-model="userInfo.password2"
+                           placeholder="确认密码">
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    已有账号?<a href="../login/login.html">登录</a>！<input type="button"
-                                                                           class="btn btn-default button-register navbar-right"
-                                                                           value="注册"/>
+                    已有账号?<a href="../login/login.html">登录</a>！
+                    <input type="button" class="btn btn-default button-register navbar-right"
+                           value="注册" @click="commit"/>
                 </div>
             </div>
         </form>
@@ -51,8 +54,43 @@
         data: {
             userInfo: {
                 username: '',
-                password: ''
+                password: '',
+                password2: ''
             }
+        },
+        methods: {
+            commit() {
+                console.log("点击了注册按钮")
+                if (this.userInfo.username === '') {
+                    alert("请输入用户名");
+                    return
+                }
+                if (this.userInfo.password === '') {
+                    alert("请输入密码");
+                    return;
+                }
+                if (this.userInfo.password2 === '') {
+                    alert("请输入确认密码");
+                    return
+                }
+                if (this.userInfo.password !== this.userInfo.password2) {
+                    alert("密码和确认密码不一致");
+                    return;
+                }
+                console.log("密码一致")
+                /*发送注册请求*/
+                axios({
+                    method: "post",
+                    url: '/user/register',
+                    data: {
+                        username: this.userInfo.username,
+                        password: this.userInfo.password,
+                        passwordTwo:this.userInfo.password2
+                    }
+                }).then(function (data) {
+                    console.log(data)
+                })
+            },
         }
     })
 </script>
