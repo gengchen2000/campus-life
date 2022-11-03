@@ -3,15 +3,43 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dbn.campuslife.mapper.UserMapper">
 
-    <select id="existUsername" resultType="boolean">
+    <resultMap id="UserInfo" type="com.dbn.campuslife.entity.user.UserInfoPO">
+        <result property="id" column="ID"/>
+        <result property="username" column="USERNAME"/>
+        <result property="password" column="PASSWORD"/>
+        <result property="salt" column="SALT"/>
+        <result property="personName" column="PERSON_NAME"/>
+        <result property="personAge" column="PERSON_AGE"/>
+        <result property="personAddress" column="PERSON_ADDRESS"/>
+        <result property="schoolName" column="SCHOOL_NAME"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="newAccount" column="NEW_ACCOUNT"/>
+    </resultMap>
+
+    <select id="existUsername" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM USER
         WHERE USERNAME = #{username}
     </select>
 
     <insert id="addUserInfo">
-        INSERT INTO USER(USERNAME, PASSWORD)
-        VALUES (#{username}, #{password})
+        INSERT INTO USER(USERNAME, PASSWORD, SALT)
+        VALUES (#{username}, #{password}, #{salt})
     </insert>
+
+    <select id="getUserInfoByUserName" resultMap="UserInfo">
+        SELECT U.ID,
+               U.USERNAME,
+               U.PASSWORD,
+               U.SALT,
+               U.PERSON_NAME,
+               U.PERSON_AGE,
+               U.PERSON_ADDRESS,
+               U.SCHOOL_NAME,
+               DATE_FORMAT(U.CREATE_TIME, '%Y-%m-%d %H:%i:%s') CREATE_TIME,
+               U.NEW_ACCOUNT
+        FROM USER U
+        WHERE USERNAME = #{username}
+    </select>
 
 </mapper>

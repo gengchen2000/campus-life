@@ -1,6 +1,7 @@
 package com.dbn.campuslife.mapper;
 
 import com.dbn.campuslife.entity.user.RegisterUserDTO;
+import com.dbn.campuslife.entity.user.UserInfoPO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -13,9 +14,9 @@ public interface UserMapper {
      * 判断用户名是否存在
      *
      * @param username 用户名
-     * @return ture: 存在 false: 不存在
+     * @return 用户名的数量
      */
-    boolean existUsername(String username);
+    Integer existUsername(String username);
 
     /**
      * 新增用户信息
@@ -23,5 +24,8 @@ public interface UserMapper {
      * @param registerUserDTO 用户信息
      */
     void addUserInfo(RegisterUserDTO registerUserDTO);
+
+
+    UserInfoPO getUserInfoByUserName(String username);
 
 }

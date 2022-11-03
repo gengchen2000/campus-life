@@ -1,6 +1,7 @@
 package com.dbn.campuslife.controller;
 
 
+import com.dbn.campuslife.entity.user.LoginUserDTO;
 import com.dbn.campuslife.entity.user.RegisterUserDTO;
 import com.dbn.campuslife.exception.CustomException;
 import com.dbn.campuslife.service.IUserService;
@@ -43,4 +44,20 @@ public class UserController {
         }
     }
 
+    /**
+     * 登录
+     *
+     * @param userDTO 用户登录信息
+     * @param request request请求
+     * @return 成功或失败
+     */
+    @RequestMapping("/login")
+    public JsonResult<Void> login(@RequestBody LoginUserDTO userDTO, HttpServletRequest request) {
+        try {
+            iUserService.loginUser(userDTO, request);
+            return JsonResult.success();
+        } catch (Exception e) {
+            return JsonResult.fail(LOGGER, "用户登录", e);
+        }
+    }
 }

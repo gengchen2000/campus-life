@@ -23,4 +23,10 @@ public class UserTest extends CampusLifeApplicationTests {
                 .with(RegisterUserDTO::setPassword, "123"));
     }
 
+
+    @Test
+    public void getUserInfo() {
+        System.out.println(userMapper.getUserInfoByUserName("abc"));
+    }
+
 }

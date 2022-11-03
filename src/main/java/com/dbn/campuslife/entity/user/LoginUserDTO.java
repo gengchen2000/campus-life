@@ -3,9 +3,9 @@ package com.dbn.campuslife.entity.user;
 import com.dbn.campuslife.util.NatureUtil;
 
 /**
- * 用户注册请求实体类
+ * 用户登录请求实体类
  */
-public class RegisterUserDTO implements NatureUtil<RegisterUserDTO> {
+public class LoginUserDTO implements NatureUtil<LoginUserDTO> {
     /**
      * 用户名
      */
@@ -14,23 +14,6 @@ public class RegisterUserDTO implements NatureUtil<RegisterUserDTO> {
      * 密码
      */
     private String password;
-    /**
-     * 确认密码
-     */
-    private String passwordTwo;
-
-    /**
-     * 盐值
-     */
-    private String salt;
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
 
     public String getUsername() {
         return username;
@@ -48,20 +31,11 @@ public class RegisterUserDTO implements NatureUtil<RegisterUserDTO> {
         this.password = password;
     }
 
-    public String getPasswordTwo() {
-        return passwordTwo;
-    }
-
-    public void setPasswordTwo(String passwordTwo) {
-        this.passwordTwo = passwordTwo;
-    }
-
     @Override
     public String toString() {
-        return "RegisterUserDTO{" +
+        return "LoginUserDTO{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", passwordTwo='" + passwordTwo + '\'' +
                 '}';
     }
 }

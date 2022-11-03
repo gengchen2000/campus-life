@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="css/register.css">
     <script src="../vue/js/vue.min.js"></script>
     <script src="../vue/js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </head>
 <body>
 <div class="container-fluid" id="root">
@@ -62,22 +66,35 @@
             commit() {
                 console.log("点击了注册按钮")
                 if (this.userInfo.username === '') {
-                    alert("请输入用户名");
+                    this.$message({
+                        type: 'warning',
+                        message: '请输入用户名'
+                    });
                     return
                 }
                 if (this.userInfo.password === '') {
-                    alert("请输入密码");
+                    this.$message({
+                        type: 'warning',
+                        message: '请输入密码'
+                    });
                     return;
                 }
                 if (this.userInfo.password2 === '') {
-                    alert("请输入确认密码");
+                    this.$message({
+                        type: 'warning',
+                        message: '请输入确认密码'
+                    });
                     return
                 }
                 if (this.userInfo.password !== this.userInfo.password2) {
-                    alert("密码和确认密码不一致");
+                    this.$message({
+                        type: 'warning',
+                        message: '确认密码与密码不一致'
+                    });
                     return;
                 }
                 console.log("密码一致")
+                let that = this
                 /*发送注册请求*/
                 axios({
                     method: "post",
@@ -85,10 +102,22 @@
                     data: {
                         username: this.userInfo.username,
                         password: this.userInfo.password,
-                        passwordTwo:this.userInfo.password2
+                        passwordTwo: this.userInfo.password2
                     }
-                }).then(function (data) {
-                    console.log(data)
+                }).then(function (action) {
+                    if (action.data.successful) {
+                        that.$message({
+                            type: 'success',
+                            message: action.data.message
+                        });
+                        /*跳转到登录页面*/
+                        // location.href = '../login/login.html?register=true'
+                    } else {
+                        that.$message({
+                            type: 'error',
+                            message: action.data.message
+                        });
+                    }
                 })
             },
         }

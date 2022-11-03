@@ -2,33 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>注册</title>
+    <title>登录</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <link rel="stylesheet" href="css/login.css">
+    <script src="../vue/js/vue.min.js"></script>
+    <script src="../vue/js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </head>
 <body>
-<div class="container-fluid">
+<div id="root" class="container-fluid">
     <div class="col-md-7"></div>
     <div class="col-md-5 register-window">
         <form class="form-horizontal">
             <div class="form-group">
                 <label for="username" class="col-sm-2 control-label">用户名</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="username" placeholder="用户名">
+                    <input type="text" class="form-control" id="username" v-model="userInfo.username"
+                           placeholder="用户名">
                 </div>
             </div>
             <div class="form-group">
                 <label for="password" class="col-sm-2 control-label">密码</label>
                 <div class="col-sm-10">
-                    <input type="password" class="form-control" id="password" placeholder="密码">
+                    <input type="password" class="form-control" id="password" v-model="userInfo.password"
+                           placeholder="密码">
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    没有有账号?<a href="../register/register.html">注册</a>！<input type="button"
-                                                          class="btn btn-default button-register navbar-right"
-                                                          value="登录"/>
+                    没有有账号?<a href="../register/register.html">注册</a>！
+                    <input type="button" @click="commit"
+                           class="btn btn-default button-register navbar-right"
+                           value="登录"/>
                 </div>
             </div>
         </form>
@@ -36,4 +45,57 @@
     <!--    <div class="col-md-1"></div>-->
 </div>
 </body>
+<script type="text/javascript">
+    Vue.config.productionTip = false
+
+    let vm = new Vue({
+        el: '#root',
+        data: {
+            userInfo: {
+                username: '',
+                password: ''
+            },
+        },
+        methods: {
+            commit() {
+                if (this.userInfo.username === '') {
+                    this.$message({
+                        type: 'warning',
+                        message: '请输入用户名'
+                    });
+                    return
+                }
+                if (this.userInfo.password === '') {
+                    this.$message({
+                        type: 'warning',
+                        message: '请输入密码'
+                    });
+                    return
+                }
+                let that = this
+                axios({
+                    method: 'post',
+                    url: '/user/login',
+                    data: {
+                        username: this.userInfo.username,
+                        password: this.userInfo.password
+                    }
+                }).then(function (action) {
+                    if (action.data.successful) {
+                        that.$message({
+                            type: 'success',
+                            message: '登录成功'
+                        });
+                    } else {
+                        that.$message({
+                            type: 'error',
+                            message: action.data.message
+                        });
+                    }
+                })
+            },
+        }
+    })
+
+</script>
 </html>
