@@ -1,6 +1,7 @@
 package com.dbn.campuslife.user;
 
 import com.dbn.campuslife.CampusLifeApplicationTests;
+import com.dbn.campuslife.entity.user.LoginUserDTO;
 import com.dbn.campuslife.entity.user.RegisterUserDTO;
 import com.dbn.campuslife.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,10 @@ public class UserTest extends CampusLifeApplicationTests {
                 .with(RegisterUserDTO::setPassword, "123"));
     }
 
+
+    public static void main(String[] args) {
+        new LoginUserDTO().with(LoginUserDTO::setUsername, "1").checkProperty();
+    }
 
     @Test
     public void getUserInfo() {

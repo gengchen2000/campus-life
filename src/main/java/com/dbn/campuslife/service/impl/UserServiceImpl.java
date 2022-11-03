@@ -54,6 +54,8 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public void loginUser(LoginUserDTO userDTO, HttpServletRequest request) {
+
+        userDTO.checkProperty();
 //        判断用户名是否存在唯一的值
         Integer i = userMapper.existUsername(userDTO.getUsername());
         if (i == 0) {

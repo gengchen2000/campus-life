@@ -42,12 +42,12 @@ public class JsonResult<T> {
     /**
      * 成功返回对象
      *
-     * @param message 成功的信息
-     * @param <T>     返回数据类型
+     * @param data 数据
+     * @param <T>  返回数据类型
      * @return 成功返回对象
      */
-    public static <T> JsonResult<T> success(String message) {
-        return new JsonResult<>(true, "200", message, null);
+    public static <T> JsonResult<T> success(T data) {
+        return new JsonResult<>(true, "200", null, data);
     }
 
     /**

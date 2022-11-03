@@ -3,6 +3,7 @@ package com.dbn.campuslife.controller;
 
 import com.dbn.campuslife.entity.user.LoginUserDTO;
 import com.dbn.campuslife.entity.user.RegisterUserDTO;
+import com.dbn.campuslife.entity.user.UserInfoPO;
 import com.dbn.campuslife.service.IUserService;
 import com.dbn.campuslife.util.JsonResult;
 import org.slf4j.Logger;
@@ -60,6 +61,21 @@ public class UserController {
             return JsonResult.success();
         } catch (Exception e) {
             return JsonResult.fail(LOGGER, "用户登录", e);
+        }
+    }
+
+    /**
+     * 获取登录人信息
+     *
+     * @param request request请求
+     */
+    @RequestMapping("/getUserInfo")
+    public JsonResult<UserInfoPO> getUserInfo(HttpServletRequest request) {
+        try {
+            UserInfoPO userInfo = (UserInfoPO) (request.getSession().getAttribute("userInfo"));
+            return JsonResult.success(userInfo);
+        } catch (Exception e) {
+            return JsonResult.fail(LOGGER, "获取登录人信息", e);
         }
     }
 }

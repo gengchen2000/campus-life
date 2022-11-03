@@ -1,18 +1,22 @@
 package com.dbn.campuslife.entity.user;
 
+import com.dbn.campuslife.util.CheckPropertyUtil;
 import com.dbn.campuslife.util.NatureUtil;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 用户登录请求实体类
  */
-public class LoginUserDTO implements NatureUtil<LoginUserDTO> {
+public class LoginUserDTO extends CheckPropertyUtil implements NatureUtil<LoginUserDTO> {
     /**
      * 用户名
      */
+    @ApiModelProperty(required = true)
     private String username;
     /**
      * 密码
      */
+    @ApiModelProperty(required = true)
     private String password;
 
     public String getUsername() {
