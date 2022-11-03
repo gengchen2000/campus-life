@@ -69,6 +69,7 @@ public class UserServiceImpl implements IUserService {
         if (!Objects.equals(password, userInfo.getPassword())) {
             throw new BusinessException("密码错误");
         }
+        request.getSession().setAttribute("userInfo", userInfo);
     }
 
     /**

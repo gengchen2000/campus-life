@@ -3,7 +3,6 @@ package com.dbn.campuslife.controller;
 
 import com.dbn.campuslife.entity.user.LoginUserDTO;
 import com.dbn.campuslife.entity.user.RegisterUserDTO;
-import com.dbn.campuslife.exception.CustomException;
 import com.dbn.campuslife.service.IUserService;
 import com.dbn.campuslife.util.JsonResult;
 import org.slf4j.Logger;
@@ -15,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 用户控制层
+ */
 @RestController
 @RequestMapping("/user")
 public class UserController {
