@@ -42,4 +42,35 @@
         WHERE USERNAME = #{username}
     </select>
 
+    <update id="updateUserInfoById">
+        UPDATE USER SET
+        <trim suffixOverrides=",">
+            <if test="username != null">
+                USERNAME = #{username},
+            </if>
+            <if test="password != null">
+                PASSWORD = #{password},
+            </if>
+            <if test="salt != null">
+                SALT = #{salt},
+            </if>
+            <if test="personName != null">
+                PERSON_NAME = #{personName},
+            </if>
+            <if test="personAge != null">
+                PERSON_AGE = #{personAge},
+            </if>
+            <if test="personAddress != null">
+                PERSON_ADDRESS = #{personAddress},
+            </if>
+            <if test="schoolName != null">
+                SCHOOL_NAME = #{schoolName},
+            </if>
+            <if test="newAccount != null">
+                NEW_ACCOUNT = #{newAccount},
+            </if>
+        </trim>
+        WHERE ID = #{id}
+    </update>
+
 </mapper>

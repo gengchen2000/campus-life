@@ -1,6 +1,7 @@
 package com.dbn.campuslife.mapper;
 
 import com.dbn.campuslife.entity.user.RegisterUserDTO;
+import com.dbn.campuslife.entity.user.UpdateUser;
 import com.dbn.campuslife.entity.user.UserInfoPO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -25,7 +26,15 @@ public interface UserMapper {
      */
     void addUserInfo(RegisterUserDTO registerUserDTO);
 
-
+    /**
+     * 通过username获取用户信息
+     *
+     * @param username 用户名
+     * @return 用户信息
+     */
     UserInfoPO getUserInfoByUserName(String username);
+
+    void updateUserInfoById(UpdateUser updateUser);
+
 
 }

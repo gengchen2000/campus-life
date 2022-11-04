@@ -3,6 +3,7 @@ package com.dbn.campuslife.controller;
 
 import com.dbn.campuslife.entity.user.LoginUserDTO;
 import com.dbn.campuslife.entity.user.RegisterUserDTO;
+import com.dbn.campuslife.entity.user.UpdateUserDTO;
 import com.dbn.campuslife.entity.user.UserInfoPO;
 import com.dbn.campuslife.service.IUserService;
 import com.dbn.campuslife.util.JsonResult;
@@ -76,6 +77,23 @@ public class UserController {
             return JsonResult.success(userInfo);
         } catch (Exception e) {
             return JsonResult.fail(LOGGER, "获取登录人信息", e);
+        }
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @param updateUserDTO 用户信息
+     * @param request       request请求
+     * @return 修改成功或失败
+     */
+    @RequestMapping("/updateUserInfo")
+    public JsonResult<Void> updateUserInfo(@RequestBody UpdateUserDTO updateUserDTO, HttpServletRequest request) {
+        try {
+            iUserService.updateUserInfo(updateUserDTO, request);
+            return JsonResult.success();
+        } catch (Exception e) {
+            return JsonResult.fail(LOGGER, "更新用户信息", e);
         }
     }
 }

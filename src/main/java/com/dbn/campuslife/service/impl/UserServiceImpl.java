@@ -1,11 +1,10 @@
 package com.dbn.campuslife.service.impl;
 
-import com.dbn.campuslife.entity.user.LoginUserDTO;
-import com.dbn.campuslife.entity.user.RegisterUserDTO;
-import com.dbn.campuslife.entity.user.UserInfoPO;
+import com.dbn.campuslife.entity.user.*;
 import com.dbn.campuslife.exception.BusinessException;
 import com.dbn.campuslife.mapper.UserMapper;
 import com.dbn.campuslife.service.IUserService;
+import com.dbn.campuslife.util.ClassChangeUtil;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
@@ -88,4 +87,19 @@ public class UserServiceImpl implements IUserService {
         return password;
     }
 
+    @Override
+    public void updateUserInfo(UpdateUserDTO updateUserDTO, HttpServletRequest request) {
+        /*获取updateUser*/
+        UpdateUser updateUser = ClassChangeUtil.toClass(updateUserDTO, UpdateUser.class);
+        /*获取当前登录人的信息*/
+        UserInfoPO userInfo = (UserInfoPO) request.getSession().getAttribute("userInfo");
+        /*从当前登录人信息中获取ID*/
+        updateUser.setId(userInfo.getId());
+        /*更新登录人信息*/
+        userMapper.updateUserInfoById(updateUser);
+
+        userInfo = userMapper.getUserInfoByUserName(userInfo.getUsername());
+        /*更新session里面的登录人信息*/
+        request.getSession().setAttribute("userInfo", userInfo);
+    }
 }

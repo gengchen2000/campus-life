@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>校园生活</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <script src="../vue/js/vue.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="../vue/js/axios.min.js"></script>
+</head>
+<body>
+<div id="root" class="container-fluid">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="row">
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="/index.html">校园生活</a>
+                        </div>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+                                <template>
+                                    <el-row class="demo-avatar demo-basic">
+                                        <div class="demo-basic--circle">
+                                            <div class="block">
+                                                <el-avatar :size="50" :src="head.imageUrl"></el-avatar>
+                                            </div>
+                                        </div>
+                                    </el-row>
+                                </template>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <div class="row">
+                <div class="col-md-3" style="border: silver solid 1px; border-radius: 10px; height: 500px">
+                    <div class="btn-group" role="group" style="width: 100%">
+                        <button type="button" class="btn btn-default" style="color: #ec971f; text-align: center;width: 100%; border: #FFFFFF solid 0;font-size: 20px">
+                            <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我的主页
+                        </button>
+                    </div>
+<!--                    <div class="btn-toolbar" role="toolbar">-->
+<!--                        <div class="btn-group btn-group-lg">-->
+<!--                            &lt;!&ndash;                            <a href="" style="text-decoration: none; color: #ec971f;">&ndash;&gt;-->
+<!--                            <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我的主页-->
+<!--                            &lt;!&ndash;                            </a>&ndash;&gt;-->
+<!--                        </div>-->
+<!--                    </div>-->
+                </div>
+                <div class="col-md-9">
+                    <el-form ref="form" :model="form" label-width="80px">
+                        <el-form-item label="昵称">
+                            <el-input v-model="form.personName"></el-input>
+                        </el-form-item>
+                        <el-form-item label="年龄" prop="age">
+                            <el-input v-model.number="form.personAge" size="small"></el-input>
+                        </el-form-item>
+                        <el-form-item label="住址">
+                            <el-input v-model="form.personAddress"></el-input>
+                        </el-form-item>
+                        <el-form-item label="学校名称">
+                            <el-input v-model="form.schoolName"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="onSubmit">保存</el-button>
+                            <a href="/index.html">
+                                <el-button>取消</el-button>
+                            </a>
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript">
+    new Vue({
+        el: '#root',
+        data: {
+            head: {
+                imageUrl: '../image/head_image.png'
+            },
+            form: {
+                personName: '',
+                personAge: 0,
+                personAddress: '',
+                schoolName: ''
+            },
+            tabPosition: 'left'
+        },
+        methods: {
+            onSubmit() {
+                let that = this
+                this.$confirm('确定要保存所修改内容么?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    axios({
+                        method: "post",
+                        url: '/user/updateUserInfo',
+                        data: that.form
+                    }).then(function (action) {
+                        if (action.data.successful) {
+                            location.reload()
+                        } else {
+                            that.$message({
+                                type: 'error',
+                                message: action.data.message
+                            });
+                        }
+                    })
+
+                }).catch(() => {
+                })
+            },
+        },
+        mounted() {
+            let that = this
+            axios({
+                method: "post",
+                url: "/user/getUserInfo"
+            }).then(function (action) {
+                that.form = action.data.data
+            })
+        },
+    })
+</script>
+</html>
