@@ -12,6 +12,12 @@
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="vue/js/axios.min.js"></script>
 </head>
+<style>
+    .input_border input {
+        border: 0;
+        text-align: center;
+    }
+</style>
 <body>
 <div id="root" class="container-fluid">
     <div class="row">
@@ -43,8 +49,52 @@
             </div>
             <div class="row">
                 <div class="col-md-3">
+                    <div class="btn-group" role="group" style="width: 100%">
+                        <button type="button" class="btn btn-default"
+                                style="text-align: center;width: 100%; border: #FFFFFF solid 0;font-size: 20px">
+                            <a href="/index.html" style="text-decoration: none; color: #ec971f;"><span
+                                    class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;&nbsp;&nbsp;全部关注</a>
+                        </button>
+                    </div>
                 </div>
                 <div class="col-md-9">
+                    <div style="border: silver solid 1px;padding: 5px;border-radius: 3px">
+                        <el-input
+                                style="font-size: 15px; "
+                                type="textarea"
+                                placeholder="请输入内容"
+                                v-model="textarea"
+                                :rows="rows"
+                                show-word-limit>
+                        </el-input>
+                        <br/>
+                        <div style="display: flex; margin-top: 4px">
+                            <div style="flex: 1;"></div>
+                            <div style="flex: 1;"></div>
+                            <div style="flex: 1;"></div>
+                            <div style="flex: 1;"></div>
+                            <div style="flex: 1;"></div>
+                            <div style="flex: 1; ">
+                                <template>
+                                    <el-select class="input_border" v-model="value" style="width: 130px">
+                                        <el-option
+                                                v-for="item in options"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </template>
+                            </div>
+                            <div style="flex: 1; text-align: right">
+                                <el-row>
+                                    <el-button style="font-size: 12px" type="warning" :disabled="read" round
+                                               @click="onSubmit">发送
+                                    </el-button>
+                                </el-row>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -65,11 +115,58 @@
                 personAge: 0,
                 personAddress: '',
                 schoolName: ''
-            }
+            },
+            /*发表文本信息*/
+            textarea: '',
+            rows: 3,
+            options: [{
+                value: 1,
+                label: '公开'
+            }, {
+                value: 2,
+                label: '粉丝'
+            }, {
+                value: 4,
+                label: '仅自己可见'
+            }],
+            value: 1,
+            read: true
         },
         methods: {
             onSubmit() {
-
+                let that = this
+                axios({
+                    method: 'post',
+                    url: '/lifeMessage/addLifeMessage',
+                    data: {
+                        messageInfo: this.textarea,
+                        power: this.value
+                    }
+                }).then(function (action) {
+                    if (action.data.successful) {
+                        that.$message({
+                            type: 'success',
+                            message: '新增成功'
+                        });
+                        that.textarea = ''
+                    } else {
+                        that.$message({
+                            type: 'error',
+                            message: action.data.message
+                        });
+                    }
+                })
+            },
+        },
+        watch: {
+            textarea() {
+                let length = this.textarea.length;
+                this.read = length <= 0;
+                if (length > 42 * 2) {
+                    this.rows = (length / 42) + 2
+                } else {
+                    this.rows = 3
+                }
             },
         },
         mounted() {
