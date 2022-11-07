@@ -10,6 +10,8 @@ import org.apache.ibatis.annotations.Update;
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 
 public class UserTest extends CampusLifeApplicationTests {
 
@@ -28,8 +30,7 @@ public class UserTest extends CampusLifeApplicationTests {
     }
 
 
-    public static void main(String[] args) {
-        new LoginUserDTO().with(LoginUserDTO::setUsername, "1").checkProperty();
+    public static void main(String[] args) throws Exception{
     }
 
     @Test

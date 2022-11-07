@@ -177,6 +177,15 @@
             }).then(function (action) {
                 that.form = action.data.data
             })
+
+            axios({
+                method: 'post',
+                url: '/lifeMessage/listLifeMessage',
+                data: {
+                    pageIndex: 1,
+                    pageSize: 6
+                }
+            })
         },
     })
 </script>

@@ -8,4 +8,47 @@
         INSERT INTO LIFE_INFO(USER_ID, MESSAGE_INFO, POWER)
         VALUES (#{userId}, #{messageInfo}, #{power})
     </insert>
+
+    <resultMap id="LifeMessage" type="com.dbn.campuslife.entity.message.LifeMessagePO">
+        <result property="id" column="ID"/>
+        <result property="messageInfo" column="MESSAGE_INFO"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="personName" column="PERSON_NAME"/>
+    </resultMap>
+
+    <sql id="listLifeMessageCondition">
+        <if test="type == 'PUBLIC'">
+            POWER = 1
+        </if>
+    </sql>
+
+    <select id="listLifeMessage" resultMap="LifeMessage">
+        SELECT *
+        FROM (SELECT L.ID,
+        L.MESSAGE_INFO,
+        L.CREATE_TIME,
+        U.PERSON_NAME,
+        ROW_NUMBER() OVER(ORDER BY
+        <if test="type == 'PUBLIC'">
+            L.CREATE_TIME DESC
+        </if>
+        ) R
+        FROM LIFE_INFO L
+        LEFT JOIN USER U ON L.USER_ID = U.ID
+        <where>
+            <include refid="listLifeMessageCondition"/>
+        </where>
+        ) S
+        WHERE S.R BETWEEN #{startIndex} AND #{endIndex}
+    </select>
+
+    <select id="countLifeMessage" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM LIFE_INFO L
+        LEFT JOIN USER U ON L.USER_ID = U.ID
+        <where>
+            <include refid="listLifeMessageCondition"/>
+        </where>
+    </select>
+
 </mapper>

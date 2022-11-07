@@ -15,6 +15,8 @@ public abstract class CheckPropertyUtil implements Serializable {
     private void checkProperty(Class<?> c) {
         if (c == CheckPropertyUtil.class) {
             return;
+        } else {
+            checkProperty(c.getSuperclass());
         }
         Field[] fields = c.getDeclaredFields();
         for (Field field : fields) {

@@ -1,9 +1,12 @@
 package com.dbn.campuslife.controller;
 
 import com.dbn.campuslife.entity.message.AddMessageDTO;
+import com.dbn.campuslife.entity.message.LifeMessageDTO;
+import com.dbn.campuslife.entity.message.LifeMessagePO;
 import com.dbn.campuslife.entity.user.UserInfoPO;
 import com.dbn.campuslife.service.ILifeMessageService;
 import com.dbn.campuslife.util.JsonResult;
+import com.dbn.campuslife.util.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +29,7 @@ public class LifeMessageController {
     ILifeMessageService iLifeMessageService;
 
     @RequestMapping("/addLifeMessage")
-    public JsonResult<Void> addLifeMessage(@RequestBody AddMessageDTO addMessageDTO, HttpServletRequest request){
+    public JsonResult<Void> addLifeMessage(@RequestBody AddMessageDTO addMessageDTO, HttpServletRequest request) {
         try {
             /*获取当前登录人信息*/
             UserInfoPO userInfo = (UserInfoPO) request.getSession().getAttribute("userInfo");
@@ -37,4 +40,18 @@ public class LifeMessageController {
         }
     }
 
+    /**
+     * 公开信息查询
+     *
+     * @param lifeMessageDTO 查询条件
+     * @return 公开分享的信息
+     */
+    @RequestMapping("/listLifeMessage")
+    public JsonResult<Result<LifeMessagePO>> listLifeMessage(@RequestBody LifeMessageDTO lifeMessageDTO) {
+        try {
+            return JsonResult.success(iLifeMessageService.listLifeMessage(lifeMessageDTO));
+        } catch (Exception e) {
+            return JsonResult.fail(LOGGER, "公开信息查询", e);
+        }
+    }
 }
