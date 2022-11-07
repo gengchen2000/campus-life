@@ -29,7 +29,7 @@
                                     <el-row class="demo-avatar demo-basic">
                                         <div class="demo-basic--circle">
                                             <div class="block">
-                                                <el-avatar :size="50" :src="head.imageUrl"></el-avatar>
+                                                <el-avatar :size="50" :src="head.imageUrl + form.headImage"></el-avatar>
                                             </div>
                                         </div>
                                     </el-row>
@@ -90,7 +90,7 @@
         el: '#root',
         data: {
             head: {
-                imageUrl: '../image/head_image.png'
+                imageUrl: '../image/'
             },
             form: {
                 personName: '',

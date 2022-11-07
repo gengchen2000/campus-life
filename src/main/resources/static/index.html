@@ -17,9 +17,21 @@
         border: 0;
         text-align: center;
     }
+
+    .mouse-move:hover {
+        color: #ec971f;
+        cursor: pointer;
+        border-radius: 13px;
+        background-color: #f6e5a0;
+    }
+
+    .mouse-move-number:hover {
+        color: #ec971f;
+        cursor: pointer;
+    }
 </style>
-<body>
-<div id="root" class="container-fluid">
+<body style="background-color: #f5f5f5">
+<div id="root" class="container-fluid" @click="changeShow">
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
@@ -36,7 +48,8 @@
                                         <div class="demo-basic--circle">
                                             <a href="userInfo/index.html">
                                                 <div class="block">
-                                                    <el-avatar :size="50" :src="head.imageUrl"></el-avatar>
+                                                    <el-avatar :size="50"
+                                                               :src="head.imageUrl + form.headImage"></el-avatar>
                                                 </div>
                                             </a>
                                         </div>
@@ -58,7 +71,7 @@
                     </div>
                 </div>
                 <div class="col-md-9">
-                    <div style="border: silver solid 1px;padding: 5px;border-radius: 3px">
+                    <div style="border: silver solid 1px;padding: 5px;border-radius: 3px; background-color: #FFFFFF">
                         <el-input
                                 style="font-size: 15px; "
                                 type="textarea"
@@ -95,6 +108,45 @@
                             </div>
                         </div>
                     </div>
+                    <br/>
+                    <div v-for="(index, key) in lifeMessage"
+                         style="background-color: #FFFFFF; border-radius: 5px; margin-top: 20px; padding: 20px">
+                        <div style="display: flex">
+                            <div style="flex: 1">
+                                <div class="block">
+                                    <el-avatar :size="50" :src="head.imageUrl + index.headImage"></el-avatar>
+                                </div>
+                            </div>
+                            <div style="flex: 7">
+                                <p><b>{{index.personName}}</b></p>
+                                <p style="color: #939393">{{index.createTime}}</p>
+                            </div>
+                            <div style="flex: 1">
+                                <div style="flex: 1; ">
+                                    <span @click.stop="changeStyle(index)" class="el-icon-arrow-down mouse-move"
+                                          style="padding: 3px; font-size: 17px"></span>
+                                    <div v-show="index.show" @click="deleteMessage(index)"
+                                         style="position: relative;border: #939393 solid 1px; background-color: #FFFFFF;border-radius: 10px;top: 5px;text-align: center;padding: 5px; cursor: pointer">
+                                        删除
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p>
+                            {{space}}{{index.messageInfo}}
+                        </p>
+                        <div style="display: flex; font-size: 16px">
+                            <div style="flex: 1; text-align: center;">
+                                <span class="el-icon-s-promotion mouse-move-number">0</span>
+                            </div>
+                            <div style="flex: 1; text-align: center">
+                                <span class="el-icon-chat-dot-round mouse-move-number">0</span>
+                            </div>
+                            <div style="flex: 1; text-align: center">
+                                <span class="el-icon-thumb mouse-move-number">0</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -104,11 +156,11 @@
 
 </body>
 <script type="text/javascript">
-    new Vue({
+    let vm = new Vue({
         el: '#root',
         data: {
             head: {
-                imageUrl: 'image/head_image.png'
+                imageUrl: 'image/'
             },
             form: {
                 personName: '',
@@ -130,7 +182,20 @@
                 label: '仅自己可见'
             }],
             value: 1,
-            read: true
+            read: true,
+            space: '　　',
+            lifeMessage: [],
+            pageIndex: null,
+            pageSize: null,
+            /*信息操作方式*/
+            messageOperate: [
+                {
+                    value: 1,
+                    label: '删除'
+                },
+            ],
+            messageValue: '',
+            a: ''
         },
         methods: {
             onSubmit() {
@@ -146,9 +211,10 @@
                     if (action.data.successful) {
                         that.$message({
                             type: 'success',
-                            message: '新增成功'
+                            message: '发布成功'
                         });
                         that.textarea = ''
+                        that.listLifeMessage()
                     } else {
                         that.$message({
                             type: 'error',
@@ -156,6 +222,59 @@
                         });
                     }
                 })
+            },
+            listLifeMessage() {
+                let that = this
+                axios({
+                    method: 'post',
+                    url: '/lifeMessage/listLifeMessage',
+                    data: {
+                        pageIndex: 1,
+                        pageSize: 6
+                    }
+                }).then(function (action) {
+                    that.lifeMessage = action.data.data.data
+                    that.pageIndex = 3
+                    that.pageSize = 2
+                    that.setLifeMessageProperty()
+                })
+            },
+            addListLifeMessage() {
+                let that = this
+                axios({
+                    method: 'post',
+                    url: '/lifeMessage/listLifeMessage',
+                    data: {
+                        pageIndex: that.pageIndex + 1,
+                        pageSize: that.pageSize
+                    }
+                }).then(function (action) {
+                    if (action.data.successful) {
+                        /*请求成功并且请求的数据大于0*/
+                        if (action.data.data.data.length > 0) {
+                            that.lifeMessage = that.lifeMessage.concat(action.data.data.data);
+                            that.pageIndex += 1
+                            that.setLifeMessageProperty()
+                        }
+                    }
+                })
+            },
+            deleteMessage(id) {
+                console.log(id)
+            },
+            changeStyle(index) {
+                this.changeShow()
+                index.show = true
+            },
+            setLifeMessageProperty() {
+                for (let i = 0; i < this.lifeMessage.length; i++) {
+                    this.$set(this.lifeMessage[i], 'show', false)
+                }
+            },
+            changeShow() {
+                for (let i = 0; i < this.lifeMessage.length; i++) {
+                    this.lifeMessage[i].show = false
+                }
             },
         },
         watch: {
@@ -178,15 +297,16 @@
                 that.form = action.data.data
             })
 
-            axios({
-                method: 'post',
-                url: '/lifeMessage/listLifeMessage',
-                data: {
-                    pageIndex: 1,
-                    pageSize: 6
-                }
-            })
+            this.listLifeMessage()
+
         },
     })
+    window.onscroll = function () {
+        let doc = document.documentElement;
+        /*判断滚动条是否到底部*/
+        if (doc.scrollHeight - doc.clientHeight < doc.scrollTop + 10) {
+            vm.addListLifeMessage()
+        }
+    }
 </script>
 </html>

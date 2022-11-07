@@ -17,6 +17,10 @@ public class LifeMessagePO {
      * 昵称
      */
     private String personName;
+    /**
+     * 头像
+     */
+    private String headImage;
 
     public Integer getId() {
         return id;
@@ -48,6 +52,14 @@ public class LifeMessagePO {
 
     public void setPersonName(String personName) {
         this.personName = personName;
+    }
+
+    public String getHeadImage() {
+        return headImage;
+    }
+
+    public void setHeadImage(String headImage) {
+        this.headImage = headImage;
     }
 
     @Override

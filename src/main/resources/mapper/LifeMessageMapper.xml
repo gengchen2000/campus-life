@@ -14,6 +14,7 @@
         <result property="messageInfo" column="MESSAGE_INFO"/>
         <result property="createTime" column="CREATE_TIME"/>
         <result property="personName" column="PERSON_NAME"/>
+        <result property="headImage" column="HEAD_IMAGE"/>
     </resultMap>
 
     <sql id="listLifeMessageCondition">
@@ -28,6 +29,7 @@
         L.MESSAGE_INFO,
         L.CREATE_TIME,
         U.PERSON_NAME,
+        U.HEAD_IMAGE,
         ROW_NUMBER() OVER(ORDER BY
         <if test="type == 'PUBLIC'">
             L.CREATE_TIME DESC

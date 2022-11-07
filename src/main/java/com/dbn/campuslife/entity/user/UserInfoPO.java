@@ -44,6 +44,10 @@ public class UserInfoPO {
      * 是否新注册0:是 1:否
      */
     private Integer newAccount;
+    /**
+     * 头像
+     */
+    private String headImage;
 
     public Integer getId() {
         return id;
@@ -123,6 +127,14 @@ public class UserInfoPO {
 
     public void setNewAccount(Integer newAccount) {
         this.newAccount = newAccount;
+    }
+
+    public String getHeadImage() {
+        return headImage;
+    }
+
+    public void setHeadImage(String headImage) {
+        this.headImage = headImage;
     }
 
     @Override

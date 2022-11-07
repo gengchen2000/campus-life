@@ -18,7 +18,7 @@ public class UpdateUserDTO implements NatureUtil<UpdateUserDTO> {
     /**
      * 年龄
      */
-    private String personAge;
+    private Integer personAge;
     /**
      * 住址
      */
@@ -36,11 +36,11 @@ public class UpdateUserDTO implements NatureUtil<UpdateUserDTO> {
         this.personName = personName;
     }
 
-    public String getPersonAge() {
+    public Integer getPersonAge() {
         return personAge;
     }
 
-    public void setPersonAge(String personAge) {
+    public void setPersonAge(Integer personAge) {
         this.personAge = personAge;
     }
 

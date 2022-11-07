@@ -43,7 +43,7 @@ public class UserTest extends CampusLifeApplicationTests {
     public void updateUserInfoById() {
         userMapper.updateUserInfoById(new UpdateUser().with(UpdateUser::setId, 16)
                 .with(UpdateUser::setPersonName, "李四")
-                .with(UpdateUser::setPersonAge, 20));
+                .with(UpdateUser::setPersonAge, 21));
     }
 
 }

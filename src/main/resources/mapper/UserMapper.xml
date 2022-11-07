@@ -14,6 +14,7 @@
         <result property="schoolName" column="SCHOOL_NAME"/>
         <result property="createTime" column="CREATE_TIME"/>
         <result property="newAccount" column="NEW_ACCOUNT"/>
+        <result property="headImage" column="HEAD_IMAGE"/>
     </resultMap>
 
     <select id="existUsername" resultType="java.lang.Integer">
@@ -37,7 +38,8 @@
                U.PERSON_ADDRESS,
                U.SCHOOL_NAME,
                DATE_FORMAT(U.CREATE_TIME, '%Y-%m-%d %H:%i:%s') CREATE_TIME,
-               U.NEW_ACCOUNT
+               U.NEW_ACCOUNT,
+               U.HEAD_IMAGE
         FROM USER U
         WHERE USERNAME = #{username}
     </select>
