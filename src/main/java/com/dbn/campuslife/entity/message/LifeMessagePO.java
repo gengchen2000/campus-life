@@ -21,6 +21,18 @@ public class LifeMessagePO {
      * 头像
      */
     private String headImage;
+    /**
+     * 分享信息的userId
+     */
+    private Integer userId;
+    /**
+     * 点赞数量
+     */
+    private Integer likeNum;
+    /**
+     * 当前登录人是否点赞
+     */
+    private boolean likeThis;
 
     public Integer getId() {
         return id;
@@ -60,6 +72,30 @@ public class LifeMessagePO {
 
     public void setHeadImage(String headImage) {
         this.headImage = headImage;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getLikeNum() {
+        return likeNum;
+    }
+
+    public void setLikeNum(Integer likeNum) {
+        this.likeNum = likeNum;
+    }
+
+    public boolean isLikeThis() {
+        return likeThis;
+    }
+
+    public void setLikeThis(boolean likeThis) {
+        this.likeThis = likeThis;
     }
 
     @Override

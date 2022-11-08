@@ -1,8 +1,6 @@
 package com.dbn.campuslife.controller;
 
-import com.dbn.campuslife.entity.message.AddMessageDTO;
-import com.dbn.campuslife.entity.message.LifeMessageDTO;
-import com.dbn.campuslife.entity.message.LifeMessagePO;
+import com.dbn.campuslife.entity.message.*;
 import com.dbn.campuslife.entity.user.UserInfoPO;
 import com.dbn.campuslife.service.ILifeMessageService;
 import com.dbn.campuslife.util.JsonResult;
@@ -47,11 +45,42 @@ public class LifeMessageController {
      * @return 公开分享的信息
      */
     @RequestMapping("/listLifeMessage")
-    public JsonResult<Result<LifeMessagePO>> listLifeMessage(@RequestBody LifeMessageDTO lifeMessageDTO) {
+    public JsonResult<Result<LifeMessagePO>> listLifeMessage(@RequestBody LifeMessageDTO lifeMessageDTO, HttpServletRequest request) {
         try {
-            return JsonResult.success(iLifeMessageService.listLifeMessage(lifeMessageDTO));
+            UserInfoPO userInfo = (UserInfoPO) request.getSession().getAttribute("userInfo");
+            return JsonResult.success(iLifeMessageService.listLifeMessage(lifeMessageDTO, userInfo));
         } catch (Exception e) {
             return JsonResult.fail(LOGGER, "公开信息查询", e);
         }
     }
+
+    /**
+     * 删除消息
+     *
+     * @param lifeMessageDTO 删除消息ID
+     * @param request        request请求
+     * @return 成功或失败
+     */
+    @RequestMapping("/deleteLifeMessage")
+    public JsonResult<Void> deleteLifeMessage(@RequestBody LifeMessageDTO lifeMessageDTO, HttpServletRequest request) {
+        try {
+            UserInfoPO userInfo = (UserInfoPO) request.getSession().getAttribute("userInfo");
+            iLifeMessageService.deleteLifeMessageById(lifeMessageDTO, userInfo);
+            return JsonResult.success();
+        } catch (Exception e) {
+            return JsonResult.fail(LOGGER, "删除生活信息", e);
+        }
+    }
+
+    @RequestMapping("/giveLike")
+    public JsonResult<Void> giveLike(@RequestBody GiveLikeDTO likeDTO, HttpServletRequest request) {
+        try {
+            UserInfoPO userInfo = (UserInfoPO) request.getSession().getAttribute("userInfo");
+            iLifeMessageService.giveLike(likeDTO, userInfo);
+            return JsonResult.success();
+        } catch (Exception e) {
+            return JsonResult.fail(LOGGER, "点赞", e);
+        }
+    }
+
 }

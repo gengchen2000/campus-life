@@ -18,6 +18,11 @@
         text-align: center;
     }
 
+    .give-like {
+        color: #ec971f;
+        cursor: pointer;
+    }
+
     .mouse-move:hover {
         color: #ec971f;
         cursor: pointer;
@@ -122,9 +127,9 @@
                                 <p style="color: #939393">{{index.createTime}}</p>
                             </div>
                             <div style="flex: 1">
-                                <div style="flex: 1; ">
+                                <div style="text-align: center" v-show="index.userId === form.id">
                                     <span @click.stop="changeStyle(index)" class="el-icon-arrow-down mouse-move"
-                                          style="padding: 3px; font-size: 17px"></span>
+                                          style="padding: 3px; font-size: 17px;"></span>
                                     <div v-show="index.show" @click="deleteMessage(index)"
                                          style="position: relative;border: #939393 solid 1px; background-color: #FFFFFF;border-radius: 10px;top: 5px;text-align: center;padding: 5px; cursor: pointer">
                                         删除
@@ -143,7 +148,8 @@
                                 <span class="el-icon-chat-dot-round mouse-move-number">0</span>
                             </div>
                             <div style="flex: 1; text-align: center">
-                                <span class="el-icon-thumb mouse-move-number">0</span>
+                                <span class="el-icon-thumb mouse-move-number" :class="{'give-like': index.likeThis}"
+                                      @click="giveLike(index)">{{index.likeNum}}</span>
                             </div>
                         </div>
                     </div>
@@ -198,6 +204,7 @@
             a: ''
         },
         methods: {
+            /*新增分享信息*/
             onSubmit() {
                 let that = this
                 axios({
@@ -223,6 +230,7 @@
                     }
                 })
             },
+            /*首次查找生活信息*/
             listLifeMessage() {
                 let that = this
                 axios({
@@ -239,6 +247,7 @@
                     that.setLifeMessageProperty()
                 })
             },
+            /*懒加载更多生活信息*/
             addListLifeMessage() {
                 let that = this
                 axios({
@@ -259,11 +268,24 @@
                     }
                 })
             },
-            deleteMessage(id) {
-                console.log(id)
+            deleteMessage(index) {
+                let that = this
+                axios({
+                    method: 'post',
+                    url: '/lifeMessage/deleteLifeMessage',
+                    data: {
+                        id: index.id
+                    }
+                }).then(function (action) {
+                    that.listLifeMessage()
+                })
             },
             changeStyle(index) {
-                this.changeShow()
+                if (index.show) {
+                    index.show = false;
+                    return
+                }
+                this.changeShow();
                 index.show = true
             },
             setLifeMessageProperty() {
@@ -274,6 +296,23 @@
             changeShow() {
                 for (let i = 0; i < this.lifeMessage.length; i++) {
                     this.lifeMessage[i].show = false
+                }
+            },
+            /*点赞*/
+            giveLike(index) {
+                if (!index.likeThis){
+                    axios({
+                        method: 'post',
+                        url: '/lifeMessage/giveLike',
+                        data: {
+                            lifeMessageId: index.id
+                        }
+                    }).then(function (action) {
+                        if (action.data.successful) {
+                            index.likeNum += 1
+                            index.likeThis = true
+                        }
+                    })
                 }
             },
         },

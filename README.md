@@ -116,3 +116,38 @@ PRIMARY KEY (ID) USING BTREE
 
 SET FOREIGN_KEY_CHECKS = 1;
 
+/*
+Navicat Premium Data Transfer
+
+Source Server         : 本地(MySQL)
+Source Server Type    : MySQL
+Source Server Version : 80031
+Source Host           : localhost:3306
+Source Schema         : my_db
+
+Target Server Type    : MySQL
+Target Server Version : 80031
+File Encoding         : 65001
+
+Date: 08/11/2022 09:48:17
+*/
+
+-- 点赞表
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for give_like
+-- ----------------------------
+DROP TABLE IF EXISTS give_like;
+CREATE TABLE give_like  (
+ID int NOT NULL AUTO_INCREMENT,
+USER_ID int NULL DEFAULT NULL,
+LIFE_MESSAGE_ID int NULL DEFAULT NULL,
+CREATE_TIME datetime NULL DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY (ID) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+

@@ -15,11 +15,17 @@
         <result property="createTime" column="CREATE_TIME"/>
         <result property="personName" column="PERSON_NAME"/>
         <result property="headImage" column="HEAD_IMAGE"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="likeNum" column="LIKE_NUM"/>
+        <result property="likeThis" column="LIKE_THIS"/>
     </resultMap>
 
     <sql id="listLifeMessageCondition">
         <if test="type == 'PUBLIC'">
             POWER = 1
+        </if>
+        <if test="type == 'GET_BY_ID'">
+            L.ID = #{id}
         </if>
     </sql>
 
@@ -30,10 +36,18 @@
         L.CREATE_TIME,
         U.PERSON_NAME,
         U.HEAD_IMAGE,
+        L.USER_ID,
+        (SELECT COUNT(*) FROM GIVE_LIKE WHERE L.ID = LIFE_MESSAGE_ID) LIKE_NUM,
+        (SELECT COUNT(*) FROM GIVE_LIKE WHERE L.ID = LIFE_MESSAGE_ID AND USER_ID = #{userId}) LIKE_THIS,
         ROW_NUMBER() OVER(ORDER BY
-        <if test="type == 'PUBLIC'">
-            L.CREATE_TIME DESC
-        </if>
+        <choose>
+            <when test="type == 'PUBLIC'">
+                L.CREATE_TIME DESC
+            </when>
+            <otherwise>
+                L.CREATE_TIME DESC
+            </otherwise>
+        </choose>
         ) R
         FROM LIFE_INFO L
         LEFT JOIN USER U ON L.USER_ID = U.ID
@@ -41,7 +55,14 @@
             <include refid="listLifeMessageCondition"/>
         </where>
         ) S
-        WHERE S.R BETWEEN #{startIndex} AND #{endIndex}
+        <choose>
+            <when test="type == 'GET_BY_ID'">
+
+            </when>
+            <otherwise>
+                WHERE S.R BETWEEN #{startIndex} AND #{endIndex}
+            </otherwise>
+        </choose>
     </select>
 
     <select id="countLifeMessage" resultType="java.lang.Integer">
@@ -52,5 +73,19 @@
             <include refid="listLifeMessageCondition"/>
         </where>
     </select>
+
+    <delete id="deleteLifeMessageById">
+        DELETE
+        FROM LIFE_INFO
+        WHERE ID = #{id}
+    </delete>
+
+    <insert id="giveLike">
+        INSERT INTO GIVE_LIKE(USER_ID, LIFE_MESSAGE_ID)
+        SELECT #{userId}
+             , #{lifeMessageId} WHERE NOT EXISTS
+             (SELECT * FROM GIVE_LIKE G WHERE USER_ID = #{userId} AND LIFE_MESSAGE_ID = #{lifeMessageId})
+    </insert>
+
 
 </mapper>
