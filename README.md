@@ -150,4 +150,40 @@ PRIMARY KEY (ID) USING BTREE
 
 SET FOREIGN_KEY_CHECKS = 1;
 
+/*
+Navicat Premium Data Transfer
+
+Source Server         : 本地(MySQL)
+Source Server Type    : MySQL
+Source Server Version : 80031
+Source Host           : localhost:3306
+Source Schema         : my_db
+
+Target Server Type    : MySQL
+Target Server Version : 80031
+File Encoding         : 65001
+
+Date: 08/11/2022 14:12:00
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+-- 评论信息表
+-- ----------------------------
+-- Table structure for life_info_comment
+-- ----------------------------
+DROP TABLE IF EXISTS life_info_comment;
+CREATE TABLE life_info_comment  (
+ID int NOT NULL AUTO_INCREMENT COMMENT '主键',
+USER_ID int NULL DEFAULT NULL COMMENT '用户ID',
+LIFE_MESSAGE_ID int NULL DEFAULT NULL COMMENT '生活信息',
+COMMENT_INFO varchar(1000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '评论内容',
+CREATE_TIME datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+PARENT_ID int NULL DEFAULT 0 COMMENT '默认0,回复的ID',
+PRIMARY KEY (ID) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+
 

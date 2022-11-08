@@ -75,4 +75,12 @@ public class LifeMessageServiceImpl implements ILifeMessageService {
             throw new BusinessException("此消息已经点过赞");
         }
     }
+
+    @Override
+    public void deleteLike(GiveLikeDTO giveLikeDTO, UserInfoPO userInfo) {
+        /*获取用户ID*/
+        giveLikeDTO.setUserId(userInfo.getId());
+
+        lifeMessageMapper.deleteLike(giveLikeDTO);
+    }
 }

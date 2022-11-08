@@ -33,6 +33,10 @@ public class LifeMessagePO {
      * 当前登录人是否点赞
      */
     private boolean likeThis;
+    /**
+     * 评论数量
+     */
+    private Integer commentNum;
 
     public Integer getId() {
         return id;
@@ -96,6 +100,14 @@ public class LifeMessagePO {
 
     public void setLikeThis(boolean likeThis) {
         this.likeThis = likeThis;
+    }
+
+    public Integer getCommentNum() {
+        return commentNum;
+    }
+
+    public void setCommentNum(Integer commentNum) {
+        this.commentNum = commentNum;
     }
 
     @Override

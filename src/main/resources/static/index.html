@@ -34,6 +34,7 @@
         color: #ec971f;
         cursor: pointer;
     }
+
 </style>
 <body style="background-color: #f5f5f5">
 <div id="root" class="container-fluid" @click="changeShow">
@@ -137,19 +138,81 @@
                                 </div>
                             </div>
                         </div>
-                        <p>
+                        <p style="font-size: 16px">
                             {{space}}{{index.messageInfo}}
                         </p>
                         <div style="display: flex; font-size: 16px">
                             <div style="flex: 1; text-align: center;">
                                 <span class="el-icon-s-promotion mouse-move-number">0</span>
                             </div>
-                            <div style="flex: 1; text-align: center">
-                                <span class="el-icon-chat-dot-round mouse-move-number">0</span>
+                            <div style="flex: 1; text-align: center" @click="index.comment = !index.comment">
+                                <span class="el-icon-chat-dot-round mouse-move-number">{{index.commentNum}}</span>
                             </div>
                             <div style="flex: 1; text-align: center">
                                 <span class="el-icon-thumb mouse-move-number" :class="{'give-like': index.likeThis}"
                                       @click="giveLike(index)">{{index.likeNum}}</span>
+                            </div>
+                        </div>
+                        <div v-show="index.comment">
+                            <div style="background-color: silver; height: 1px; margin-top: 5px"></div>
+                            <div style="margin-top: 15px; display: flex; padding-left: 20px; align-items: center">
+                                <div style="flex: 1">
+                                    <div class="block">
+                                        <el-avatar :size="40"
+                                                   :src="head.imageUrl + form.headImage"></el-avatar>
+                                    </div>
+                                </div>
+                                <div style="flex: 10;">
+                                    <el-input
+                                            type="textarea"
+                                            autosize
+                                            placeholder="请输入内容"
+                                            v-model="index.textarea">
+                                    </el-input>
+                                </div>
+                                <div style="flex: 2; width: 100%; text-align: center;">
+                                    <el-row>
+                                        <el-button style="font-size: 14px;" type="warning" size="mini"
+                                                   :disabled="index.textarea.length <= 0"
+                                                   round
+                                                   @click="onSubmit">发送
+                                        </el-button>
+                                    </el-row>
+                                </div>
+                            </div>
+                            <div style="background-color: silver; height: 1px; margin-top: 5px"></div>
+                            <div style="margin-top: 15px; display: flex; padding-left: 20px; align-items: flex-start">
+                                <div style="flex: 1">
+                                    <div class="block">
+                                        <el-avatar :size="38"
+                                                   :src="head.imageUrl + index.imageName"></el-avatar>
+                                    </div>
+                                </div>
+                                <div style="flex: 12;">
+                                    <div style=" word-break: break-all; padding-right: 10px">
+                                        <span style="color: #eb7350;"><b>绞尽脑汁王多多</b></span>: 1305位企业家上榜，总财富达24.5万亿】农夫山泉68岁的浙商钟睒睒财富比去年增长650亿元，即17%，以4，550亿元第二次成为中国首富。钟睒睒创造了二十多年来中国首富财富的最高纪录。字节跳动39岁的张一鸣财富比去年下降950亿元，即28%，以2，450亿元
+                                    </div>
+                                    <div style="display: flex">
+                                        <div style="flex: 20;">
+                                            <p style="margin: 0 0 5px 0; color: #939393">
+                                                2022-11-08 14:01:40
+                                            </p>
+                                        </div>
+                                        <div style="flex: 3; display: flex">
+                                            <div style="flex: 1">
+                                                <span></span>
+                                            </div>
+                                            <div style="flex: 1">
+                                                <span class="el-icon-chat-dot-round mouse-move-number"></span>
+                                            </div>
+                                            <div style="flex: 1">
+                                                <span class="el-icon-thumb mouse-move-number"></span>
+                                            </div>
+                                        </div>
+                                        <div style="flex: 1"></div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -291,6 +354,8 @@
             setLifeMessageProperty() {
                 for (let i = 0; i < this.lifeMessage.length; i++) {
                     this.$set(this.lifeMessage[i], 'show', false)
+                    this.$set(this.lifeMessage[i], 'textarea', '')
+                    this.$set(this.lifeMessage[i], 'comment', false)
                 }
             },
             changeShow() {
@@ -300,7 +365,7 @@
             },
             /*点赞*/
             giveLike(index) {
-                if (!index.likeThis){
+                if (!index.likeThis) {
                     axios({
                         method: 'post',
                         url: '/lifeMessage/giveLike',
@@ -312,6 +377,17 @@
                             index.likeNum += 1
                             index.likeThis = true
                         }
+                    })
+                } else {
+                    axios({
+                        method: 'post',
+                        url: '/lifeMessage/deleteLike',
+                        data: {
+                            lifeMessageId: index.id
+                        }
+                    }).then(function (action) {
+                        index.likeNum -= 1
+                        index.likeThis = false
                     })
                 }
             },

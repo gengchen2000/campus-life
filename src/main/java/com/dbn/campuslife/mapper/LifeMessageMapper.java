@@ -43,4 +43,6 @@ public interface LifeMessageMapper {
      */
     boolean giveLike(GiveLikeDTO giveLikeDTO);
 
+    void deleteLike(GiveLikeDTO giveLikeDTO);
+
 }

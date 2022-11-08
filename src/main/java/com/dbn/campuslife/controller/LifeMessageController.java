@@ -83,4 +83,21 @@ public class LifeMessageController {
         }
     }
 
+    /**
+     * 取消点赞
+     *
+     * @param giveLikeDTO 消息ID
+     * @param request     request请求
+     * @return 取消成功或失败
+     */
+    @RequestMapping("/deleteLike")
+    public JsonResult<Void> deleteLike(@RequestBody GiveLikeDTO giveLikeDTO, HttpServletRequest request) {
+        try {
+            UserInfoPO userInfo = (UserInfoPO) request.getSession().getAttribute("userInfo");
+            iLifeMessageService.deleteLike(giveLikeDTO, userInfo);
+            return JsonResult.success();
+        } catch (Exception e) {
+            return JsonResult.fail(LOGGER, "取消点赞", e);
+        }
+    }
 }
