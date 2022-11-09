@@ -1,17 +1,12 @@
 package com.dbn.campuslife.user;
 
 import com.dbn.campuslife.CampusLifeApplicationTests;
-import com.dbn.campuslife.entity.user.LoginUserDTO;
 import com.dbn.campuslife.entity.user.RegisterUserDTO;
 import com.dbn.campuslife.entity.user.UpdateUser;
-import com.dbn.campuslife.entity.user.UpdateUserDTO;
 import com.dbn.campuslife.mapper.UserMapper;
-import org.apache.ibatis.annotations.Update;
 import org.junit.jupiter.api.Test;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Field;
-import java.util.Arrays;
 
 public class UserTest extends CampusLifeApplicationTests {
 

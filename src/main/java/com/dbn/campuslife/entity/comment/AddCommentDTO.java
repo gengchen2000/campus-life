@@ -20,6 +20,14 @@ public class AddCommentDTO extends CheckPropertyUtil {
      */
     @ApiModelProperty(required = true)
     private String commentInfo;
+    /**
+     * 父ID
+     */
+    private Integer parentId;
+    /**
+     * 回复用户ID
+     */
+    private Integer replayUserId;
 
 
     public Integer getUserId() {
@@ -44,6 +52,22 @@ public class AddCommentDTO extends CheckPropertyUtil {
 
     public void setCommentInfo(String commentInfo) {
         this.commentInfo = commentInfo;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
+    public Integer getReplayUserId() {
+        return replayUserId;
+    }
+
+    public void setReplayUserId(Integer replayUserId) {
+        this.replayUserId = replayUserId;
     }
 
     @Override

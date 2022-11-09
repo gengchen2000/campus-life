@@ -1,7 +1,10 @@
 package com.dbn.campuslife.service;
 
 import com.dbn.campuslife.entity.comment.AddCommentDTO;
+import com.dbn.campuslife.entity.comment.CommentPO;
+import com.dbn.campuslife.entity.comment.ListCommentDTO;
 import com.dbn.campuslife.entity.user.UserInfoPO;
+import com.dbn.campuslife.util.Result;
 
 /**
  * 评论服务层接口
@@ -15,5 +18,7 @@ public interface ICommentService {
      * @param userInfo      当前登录人信息
      */
     void addComment(AddCommentDTO addCommentDTO, UserInfoPO userInfo);
+
+    Result<CommentPO> listComments(ListCommentDTO listCommentDTO, UserInfoPO userInfo);
 
 }

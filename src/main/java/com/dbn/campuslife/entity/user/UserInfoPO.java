@@ -1,9 +1,11 @@
 package com.dbn.campuslife.entity.user;
 
+import com.dbn.campuslife.util.NatureUtil;
+
 /**
  * 用户的所有信息
  */
-public class UserInfoPO {
+public class UserInfoPO implements NatureUtil<UserInfoPO> {
     /**
      * 主键
      */
