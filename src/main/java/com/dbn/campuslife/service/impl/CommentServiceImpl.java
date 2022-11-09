@@ -51,7 +51,7 @@ public class CommentServiceImpl implements ICommentService {
                 map.put(s.getParentId(), new CommentPO().addChildren(s));
             }
         });
-        List<CommentPO> comments = map.entrySet().parallelStream().filter(s -> s.getKey() == 0).map(Map.Entry::getValue).collect(Collectors.toList());
+        List<CommentPO> comments = map.entrySet().parallelStream().filter(s -> s.getKey() == 0).map(Map.Entry::getValue).collect(Collectors.toList()).get(0).getChildren();
         comments.sort(Comparator.comparingInt(CommentPO::getLikeNum));
         return new Result<>(comments, 0);
     }
