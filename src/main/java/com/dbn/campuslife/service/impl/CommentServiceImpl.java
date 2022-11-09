@@ -22,6 +22,8 @@ public class CommentServiceImpl implements ICommentService {
 
         addCommentDTO.setUserId(userInfo.getId());
 
+        addCommentDTO.checkProperty();
+
         commentMapper.addComment(addCommentDTO);
     }
 }

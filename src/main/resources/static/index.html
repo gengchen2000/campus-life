@@ -154,7 +154,7 @@
                             </div>
                         </div>
                         <div v-show="index.comment">
-                            <div style="background-color: silver; height: 1px; margin-top: 5px"></div>
+                            <div style="background-color: #f1efef; height: 1px; margin-top: 5px"></div>
                             <div style="margin-top: 15px; display: flex; padding-left: 20px; align-items: center">
                                 <div style="flex: 1">
                                     <div class="block">
@@ -175,12 +175,12 @@
                                         <el-button style="font-size: 14px;" type="warning" size="mini"
                                                    :disabled="index.textarea.length <= 0"
                                                    round
-                                                   @click="onSubmit">发送
+                                                   @click="submitComment(index)">评论
                                         </el-button>
                                     </el-row>
                                 </div>
                             </div>
-                            <div style="background-color: silver; height: 1px; margin-top: 5px"></div>
+                            <div style="background-color: #f1efef; height: 1px; margin-top: 5px"></div>
                             <div style="margin-top: 15px; display: flex; padding-left: 20px; align-items: flex-start">
                                 <div style="flex: 1">
                                     <div class="block">
@@ -190,7 +190,8 @@
                                 </div>
                                 <div style="flex: 12;">
                                     <div style=" word-break: break-all; padding-right: 10px">
-                                        <span style="color: #eb7350;"><b>绞尽脑汁王多多</b></span>: 1305位企业家上榜，总财富达24.5万亿】农夫山泉68岁的浙商钟睒睒财富比去年增长650亿元，即17%，以4，550亿元第二次成为中国首富。钟睒睒创造了二十多年来中国首富财富的最高纪录。字节跳动39岁的张一鸣财富比去年下降950亿元，即28%，以2，450亿元
+                                        <span style="color: #eb7350;"><b>绞尽脑汁王多多</b></span>:
+                                        1305位企业家上榜，总财富达24.5万亿】农夫山泉68岁的浙商钟睒睒财富比去年增长650亿元，即17%，以4，550亿元第二次成为中国首富。钟睒睒创造了二十多年来中国首富财富的最高纪录。字节跳动39岁的张一鸣财富比去年下降950亿元，即28%，以2，450亿元
                                     </div>
                                     <div style="display: flex">
                                         <div style="flex: 20;">
@@ -211,7 +212,56 @@
                                         </div>
                                         <div style="flex: 1"></div>
                                     </div>
-
+                                    <div style="border-left: #dfdfdf solid 1px; padding-left: 5px">
+                                        <div style="margin-top: 5px">
+                                            <div>
+                                                <span style="color: #eb7350;">绞尽脑汁王多多</span>:回复<span style="color: #eb7350;">绞尽脑汁王多多</span>:1305位企业家上榜，总财富达24.5万亿】农夫山泉68岁的浙商钟睒睒财富比去年增长650亿元，即17%，以4，550亿元第二次成为中国首富。钟睒睒创造了二十多年来中国首富财富的最高纪录。字节跳动39岁的张一鸣财富比去年下降950亿元，即28%，以2，450亿元
+                                            </div>
+                                            <div style="display: flex">
+                                                <div style="flex: 20;">
+                                                    <p style="margin: 0 0 5px 0; color: #939393">
+                                                        2022-11-08 14:01:40
+                                                    </p>
+                                                </div>
+                                                <div style="flex: 3; display: flex">
+                                                    <div style="flex: 1">
+                                                        <span></span>
+                                                    </div>
+                                                    <div style="flex: 1">
+                                                        <span class="el-icon-chat-dot-round mouse-move-number"></span>
+                                                    </div>
+                                                    <div style="flex: 1">
+                                                        <span class="el-icon-thumb mouse-move-number"></span>
+                                                    </div>
+                                                </div>
+                                                <div style="flex: 1"></div>
+                                            </div>
+                                        </div>
+                                        <div style="margin-top: 5px">
+                                            <div>
+                                                <span style="color: #eb7350;">绞尽脑汁王多多</span>: 我是一个粉刷匠
+                                            </div>
+                                            <div style="display: flex">
+                                                <div style="flex: 20;">
+                                                    <p style="margin: 0 0 5px 0; color: #939393">
+                                                        2022-11-08 14:01:40
+                                                    </p>
+                                                </div>
+                                                <div style="flex: 3; display: flex">
+                                                    <div style="flex: 1">
+                                                        <span></span>
+                                                    </div>
+                                                    <div style="flex: 1">
+                                                        <span class="el-icon-chat-dot-round mouse-move-number"></span>
+                                                    </div>
+                                                    <div style="flex: 1">
+                                                        <span class="el-icon-thumb mouse-move-number"></span>
+                                                    </div>
+                                                </div>
+                                                <div style="flex: 1"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -324,6 +374,7 @@
                     if (action.data.successful) {
                         /*请求成功并且请求的数据大于0*/
                         if (action.data.data.data.length > 0) {
+                            // debugger
                             that.lifeMessage = that.lifeMessage.concat(action.data.data.data);
                             that.pageIndex += 1
                             that.setLifeMessageProperty()
@@ -353,9 +404,13 @@
             },
             setLifeMessageProperty() {
                 for (let i = 0; i < this.lifeMessage.length; i++) {
-                    this.$set(this.lifeMessage[i], 'show', false)
-                    this.$set(this.lifeMessage[i], 'textarea', '')
-                    this.$set(this.lifeMessage[i], 'comment', false)
+                    console.log(this.lifeMessage[i].comment)
+                    if (i === 0 && !this.lifeMessage[0].comment) {
+                        // debugger
+                    }
+                    this.$set(this.lifeMessage[i], 'show', this.lifeMessage[i].show === undefined ? false : this.lifeMessage[i].show);
+                    this.$set(this.lifeMessage[i], 'textarea', this.lifeMessage[i].textarea === undefined ? '' : this.lifeMessage[i].textarea)
+                    this.$set(this.lifeMessage[i], 'comment', this.lifeMessage[i].comment === undefined ? false : this.lifeMessage[i].comment)
                 }
             },
             changeShow() {
@@ -390,6 +445,22 @@
                         index.likeThis = false
                     })
                 }
+            },
+            /*添加评论*/
+            submitComment(index) {
+                axios({
+                    method: 'post',
+                    url: '/comment/addComment',
+                    data: {
+                        lifeMessageId: index.id,
+                        commentInfo: index.textarea
+                    }
+                }).then(function (action) {
+                    debugger
+                    if (action.data.successful) {
+                        index.textarea = ''
+                    }
+                })
             },
         },
         watch: {

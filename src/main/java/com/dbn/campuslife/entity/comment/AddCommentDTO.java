@@ -1,18 +1,24 @@
 package com.dbn.campuslife.entity.comment;
 
-public class AddCommentDTO {
+import com.dbn.campuslife.util.CheckPropertyUtil;
+import io.swagger.annotations.ApiModelProperty;
+
+public class AddCommentDTO extends CheckPropertyUtil {
 
     /**
      * 登录人ID
      */
+    @ApiModelProperty(required = true)
     private Integer userId;
     /**
      * 生活信息ID
      */
+    @ApiModelProperty(required = true)
     private Integer lifeMessageId;
     /**
      * 评论信息
      */
+    @ApiModelProperty(required = true)
     private String commentInfo;
 
 
