@@ -2,6 +2,7 @@ package com.dbn.campuslife.service.impl;
 
 import com.dbn.campuslife.entity.comment.AddCommentDTO;
 import com.dbn.campuslife.entity.comment.CommentPO;
+import com.dbn.campuslife.entity.comment.DeleteCommentDTO;
 import com.dbn.campuslife.entity.comment.ListCommentDTO;
 import com.dbn.campuslife.entity.user.UserInfoPO;
 import com.dbn.campuslife.mapper.CommentMapper;
@@ -69,5 +70,15 @@ public class CommentServiceImpl implements ICommentService {
         comments.sort((c1, c2) -> c2.getCreateTime().compareTo(c1.getCreateTime()));
         /*再按点赞数量排序*/
         comments.sort(Comparator.comparingInt(CommentPO::getLikeNum));
+    }
+
+    @Override
+    public void deleteComment(DeleteCommentDTO commentDTO, UserInfoPO userInfo) {
+
+        commentDTO.setUserId(userInfo.getId());
+        /*检查必填字段是否为空*/
+        commentDTO.checkProperty();
+        /*删除*/
+        commentMapper.deleteComment(commentDTO);
     }
 }

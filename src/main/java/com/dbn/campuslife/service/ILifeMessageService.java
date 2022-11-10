@@ -1,12 +1,11 @@
 package com.dbn.campuslife.service;
 
 import com.dbn.campuslife.entity.message.AddMessageDTO;
-import com.dbn.campuslife.entity.message.GiveLikeDTO;
+import com.dbn.campuslife.entity.message.GiveMessageLikeDTO;
 import com.dbn.campuslife.entity.message.LifeMessageDTO;
 import com.dbn.campuslife.entity.message.LifeMessagePO;
 import com.dbn.campuslife.entity.user.UserInfoPO;
 import com.dbn.campuslife.util.Result;
-import org.apache.catalina.User;
 
 public interface ILifeMessageService {
 
@@ -34,7 +33,7 @@ public interface ILifeMessageService {
      * @param giveLikeDTO 点赞信息ID
      * @param userInfo    用户信息
      */
-    void giveLike(GiveLikeDTO giveLikeDTO, UserInfoPO userInfo);
+    void giveLike(GiveMessageLikeDTO giveLikeDTO, UserInfoPO userInfo);
 
     /**
      * 取消点赞
@@ -42,5 +41,5 @@ public interface ILifeMessageService {
      * @param giveLikeDTO 消息ID
      * @param userInfo    登录人信息
      */
-    void deleteLike(GiveLikeDTO giveLikeDTO, UserInfoPO userInfo);
+    void deleteLike(GiveMessageLikeDTO giveLikeDTO, UserInfoPO userInfo);
 }

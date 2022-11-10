@@ -1,7 +1,5 @@
 package com.dbn.campuslife.controller;
 
-import com.dbn.campuslife.entity.comment.CommentPO;
-import com.dbn.campuslife.entity.comment.ListCommentDTO;
 import com.dbn.campuslife.entity.message.*;
 import com.dbn.campuslife.entity.user.UserInfoPO;
 import com.dbn.campuslife.service.ILifeMessageService;
@@ -75,7 +73,7 @@ public class LifeMessageController {
     }
 
     @RequestMapping("/giveLike")
-    public JsonResult<Void> giveLike(@RequestBody GiveLikeDTO likeDTO, HttpServletRequest request) {
+    public JsonResult<Void> giveLike(@RequestBody GiveMessageLikeDTO likeDTO, HttpServletRequest request) {
         try {
             UserInfoPO userInfo = (UserInfoPO) request.getSession().getAttribute("userInfo");
             iLifeMessageService.giveLike(likeDTO, userInfo);
@@ -93,7 +91,7 @@ public class LifeMessageController {
      * @return 取消成功或失败
      */
     @RequestMapping("/deleteLike")
-    public JsonResult<Void> deleteLike(@RequestBody GiveLikeDTO giveLikeDTO, HttpServletRequest request) {
+    public JsonResult<Void> deleteLike(@RequestBody GiveMessageLikeDTO giveLikeDTO, HttpServletRequest request) {
         try {
             UserInfoPO userInfo = (UserInfoPO) request.getSession().getAttribute("userInfo");
             iLifeMessageService.deleteLike(giveLikeDTO, userInfo);

@@ -202,7 +202,9 @@
                                         </div>
                                         <div style="flex: 3; display: flex">
                                             <div style="flex: 1">
-                                                <span></span>
+                                                <span class="el-icon-delete mouse-move-number"
+                                                      @click="deleteComment(item.id, index)"
+                                                      v-if="item.userId === form.id"></span>
                                             </div>
                                             <div style="flex: 1">
                                                 <span class="el-icon-chat-dot-round mouse-move-number"
@@ -215,14 +217,16 @@
                                         </div>
                                         <div style="flex: 1"></div>
                                     </div>
-                                    <div style="border-left: #dfdfdf solid 1px; padding-left: 5px" v-for="comment in item.children">
-                                        <div style="margin-top: 5px" >
+                                    <div style="border-left: #dfdfdf solid 1px; padding-left: 5px"
+                                         v-for="comment in item.children">
+                                        <div style="margin-top: 5px">
                                             <div v-if="comment.replay">
                                                 <span style="color: #eb7350;">{{comment.personName}}</span>:回复<span
                                                     style="color: #eb7350;">{{comment.replayPersonName}}</span>:{{comment.commentInfo}}
                                             </div>
                                             <div v-if="!comment.replay">
-                                                <span style="color: #eb7350;">{{comment.personName}}</span>: {{comment.commentInfo}}
+                                                <span style="color: #eb7350;">{{comment.personName}}</span>:
+                                                {{comment.commentInfo}}
                                             </div>
                                             <div style="display: flex">
                                                 <div style="flex: 20;">
@@ -232,10 +236,13 @@
                                                 </div>
                                                 <div style="flex: 3; display: flex">
                                                     <div style="flex: 1">
-                                                        <span></span>
+                                                        <span @click="deleteComment(comment.id, index)"
+                                                              class="el-icon-delete mouse-move-number"
+                                                              v-if="comment.userId === form.id"></span>
                                                     </div>
                                                     <div style="flex: 1">
-                                                        <span class="el-icon-chat-dot-round mouse-move-number" @click="openTwo(comment, item, index)"></span>
+                                                        <span class="el-icon-chat-dot-round mouse-move-number"
+                                                              @click="openTwo(comment, item, index)"></span>
                                                     </div>
                                                     <div style="flex: 1">
                                                         <span class="el-icon-thumb mouse-move-number"></span>
@@ -517,6 +524,20 @@
                     })
                 }).catch(() => {
                 });
+            },
+            deleteComment(id, index) {
+                let that = this
+                axios({
+                    method: 'post',
+                    url: '/comment/deleteComment',
+                    data: {
+                        commentId: id
+                    }
+                }).then(function (action) {
+                    if (action.data.successful) {
+                        that.listComment(index)
+                    }
+                })
             },
         },
         watch: {

@@ -2,6 +2,7 @@ package com.dbn.campuslife.mapper;
 
 import com.dbn.campuslife.entity.comment.AddCommentDTO;
 import com.dbn.campuslife.entity.comment.CommentPO;
+import com.dbn.campuslife.entity.comment.DeleteCommentDTO;
 import com.dbn.campuslife.entity.comment.ListCommentDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,5 +17,7 @@ public interface CommentMapper {
     void addComment(AddCommentDTO addCommentDTO);
 
     List<CommentPO> listComments(ListCommentDTO listCommentDTO);
+
+    boolean deleteComment(DeleteCommentDTO deleteCommentDTO);
 
 }

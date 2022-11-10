@@ -1,7 +1,7 @@
 package com.dbn.campuslife.life;
 
 import com.dbn.campuslife.CampusLifeApplicationTests;
-import com.dbn.campuslife.entity.message.GiveLikeDTO;
+import com.dbn.campuslife.entity.message.GiveMessageLikeDTO;
 import com.dbn.campuslife.entity.message.LifeMessageDTO;
 import com.dbn.campuslife.mapper.LifeMessageMapper;
 import org.junit.jupiter.api.Test;
@@ -30,8 +30,8 @@ public class LifeTest extends CampusLifeApplicationTests {
 
     @Test
     public void giveLike() {
-        System.out.println(lifeMessageMapper.giveLike(new GiveLikeDTO()
-                .with(GiveLikeDTO::setUserId, 1)
-                .with(GiveLikeDTO::setLifeMessageId, 2)));
+        System.out.println(lifeMessageMapper.giveLike(new GiveMessageLikeDTO()
+                .with(GiveMessageLikeDTO::setUserId, 1)
+                .with(GiveMessageLikeDTO::setLifeMessageId, 2)));
     }
 }

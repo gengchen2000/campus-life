@@ -1,7 +1,7 @@
 package com.dbn.campuslife.mapper;
 
 import com.dbn.campuslife.entity.message.AddMessageDTO;
-import com.dbn.campuslife.entity.message.GiveLikeDTO;
+import com.dbn.campuslife.entity.message.GiveMessageLikeDTO;
 import com.dbn.campuslife.entity.message.LifeMessageDTO;
 import com.dbn.campuslife.entity.message.LifeMessagePO;
 import org.apache.ibatis.annotations.Mapper;
@@ -41,8 +41,8 @@ public interface LifeMessageMapper {
      * @param giveLikeDTO 用户id和消息id
      * @return true 点赞成功 false 此消息已经点过赞
      */
-    boolean giveLike(GiveLikeDTO giveLikeDTO);
+    boolean giveLike(GiveMessageLikeDTO giveLikeDTO);
 
-    void deleteLike(GiveLikeDTO giveLikeDTO);
+    void deleteLike(GiveMessageLikeDTO giveLikeDTO);
 
 }

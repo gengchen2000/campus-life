@@ -1,7 +1,7 @@
 package com.dbn.campuslife.service.impl;
 
 import com.dbn.campuslife.entity.message.AddMessageDTO;
-import com.dbn.campuslife.entity.message.GiveLikeDTO;
+import com.dbn.campuslife.entity.message.GiveMessageLikeDTO;
 import com.dbn.campuslife.entity.message.LifeMessageDTO;
 import com.dbn.campuslife.entity.message.LifeMessagePO;
 import com.dbn.campuslife.entity.user.UserInfoPO;
@@ -9,15 +9,11 @@ import com.dbn.campuslife.exception.BusinessException;
 import com.dbn.campuslife.mapper.LifeMessageMapper;
 import com.dbn.campuslife.service.ILifeMessageService;
 import com.dbn.campuslife.util.Result;
-import org.springframework.boot.context.config.ConfigData;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class LifeMessageServiceImpl implements ILifeMessageService {
@@ -66,7 +62,7 @@ public class LifeMessageServiceImpl implements ILifeMessageService {
     }
 
     @Override
-    public void giveLike(GiveLikeDTO giveLikeDTO, UserInfoPO userInfo) {
+    public void giveLike(GiveMessageLikeDTO giveLikeDTO, UserInfoPO userInfo) {
         giveLikeDTO.setUserId(userInfo.getId());
 
         boolean flag = lifeMessageMapper.giveLike(giveLikeDTO);
@@ -77,7 +73,7 @@ public class LifeMessageServiceImpl implements ILifeMessageService {
     }
 
     @Override
-    public void deleteLike(GiveLikeDTO giveLikeDTO, UserInfoPO userInfo) {
+    public void deleteLike(GiveMessageLikeDTO giveLikeDTO, UserInfoPO userInfo) {
         /*获取用户ID*/
         giveLikeDTO.setUserId(userInfo.getId());
 

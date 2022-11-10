@@ -2,7 +2,7 @@ package com.dbn.campuslife.entity.message;
 
 import com.dbn.campuslife.util.NatureUtil;
 
-public class GiveLikeDTO implements NatureUtil<GiveLikeDTO> {
+public class GiveMessageLikeDTO implements NatureUtil<GiveMessageLikeDTO> {
     /**
      * 用户ID
      */

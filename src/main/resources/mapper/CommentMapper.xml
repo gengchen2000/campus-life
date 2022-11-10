@@ -54,4 +54,11 @@
         WHERE LIFE_MESSAGE_ID = #{lifeMessageId}
     </select>
 
+    <delete id="deleteComment">
+        DELETE
+        FROM LIFE_INFO_COMMENT
+        WHERE ID = #{commentId}
+          AND USER_ID = #{userId}
+    </delete>
+
 </mapper>
