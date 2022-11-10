@@ -10,6 +10,7 @@ import com.dbn.campuslife.util.Result;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.xml.stream.events.Comment;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -51,8 +52,22 @@ public class CommentServiceImpl implements ICommentService {
                 map.put(s.getParentId(), new CommentPO().addChildren(s));
             }
         });
-        List<CommentPO> comments = map.entrySet().parallelStream().filter(s -> s.getKey() == 0).map(Map.Entry::getValue).collect(Collectors.toList()).get(0).getChildren();
-        comments.sort(Comparator.comparingInt(CommentPO::getLikeNum));
+        List<CommentPO> list = map.entrySet().parallelStream().filter(s -> s.getKey() == 0).map(Map.Entry::getValue).collect(Collectors.toList());
+        if (list.size() == 0) {
+            return new Result<>();
+        }
+        List<CommentPO> comments = list.get(0).getChildren();
+        /*第一级评论排序*/
+        sortComment(comments);
+        /*第二级评论*/
+        comments.stream().map(CommentPO::getChildren).forEach(this::sortComment);
         return new Result<>(comments, 0);
+    }
+
+    private void sortComment(List<CommentPO> comments) {
+        /*优先按时间排序*/
+        comments.sort((c1, c2) -> c2.getCreateTime().compareTo(c1.getCreateTime()));
+        /*再按点赞数量排序*/
+        comments.sort(Comparator.comparingInt(CommentPO::getLikeNum));
     }
 }

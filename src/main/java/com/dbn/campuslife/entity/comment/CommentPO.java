@@ -23,7 +23,7 @@ public class CommentPO {
     /**
      * 是否是回复
      */
-    private String replay;
+    private boolean replay;
     /**
      * 父ID
      */
@@ -33,7 +33,19 @@ public class CommentPO {
      */
     private String createTime;
 
+    /**
+     * 点赞数量
+     */
     private Integer likeNum;
+
+    /**
+     * 回复内容
+     */
+    private String commentInfo;
+    /**
+     * 头像名称
+     */
+    private String headImage;
 
     public Integer getLikeNum() {
         return likeNum;
@@ -77,11 +89,11 @@ public class CommentPO {
         this.replayPersonName = replayPersonName;
     }
 
-    public String getReplay() {
+    public boolean isReplay() {
         return replay;
     }
 
-    public void setReplay(String replay) {
+    public void setReplay(boolean replay) {
         this.replay = replay;
     }
 
@@ -112,6 +124,22 @@ public class CommentPO {
 
     public void addAllChildren(List<CommentPO> comments) {
         this.children.addAll(comments);
+    }
+
+    public String getCommentInfo() {
+        return commentInfo;
+    }
+
+    public void setCommentInfo(String commentInfo) {
+        this.commentInfo = commentInfo;
+    }
+
+    public String getHeadImage() {
+        return headImage;
+    }
+
+    public void setHeadImage(String headImage) {
+        this.headImage = headImage;
     }
 
     @Override

@@ -17,10 +17,10 @@
         VALUES (#{userId}, #{lifeMessageId}, #{commentInfo}
         <trim suffixOverrides=",">
             <if test="replayUserId != null">
-                ,REPLAY_USER_ID = #{replayUserId}
+                , #{replayUserId}
             </if>
             <if test="parentId != null">
-                ,PARENT_ID = #{parentId}
+                , #{parentId}
             </if>
         </trim>
         )
@@ -34,17 +34,22 @@
         <result property="replay" column="REPLAY"/>
         <result property="parentId" column="PARENT_ID"/>
         <result property="createTime" column="CREATE_TIME"/>
-
+        <result property="commentInfo" column="COMMENT_INFO"/>
+        <result property="likeNum" column="LIKE_NUM"/>
+        <result property="headImage" column="HEAD_IMAGE"/>
     </resultMap>
 
     <select id="listComments" resultMap="Comment">
         SELECT ID,
                USER_ID,
                (SELECT PERSON_NAME FROM USER WHERE ID = L.USER_ID)        PERSON_NAME,
+               (SELECT HEAD_IMAGE FROM USER WHERE ID = L.USER_ID)         HEAD_IMAGE,
                (SELECT PERSON_NAME FROM USER WHERE ID = L.REPLAY_USER_ID) REPLAY_PERSON_NAME,
                (CASE WHEN REPLAY_USER_ID IS NULL THEN 0 ELSE 1 END)       REPLAY,
                PARENT_ID,
-               DATE_FORMAT(L.CREATE_TIME, '%Y-%m-%d %H:%i:%s')            CREATE_TIME
+               DATE_FORMAT(L.CREATE_TIME, '%Y-%m-%d %H:%i:%s')            CREATE_TIME,
+               COMMENT_INFO,
+               0                                                          LIKE_NUM
         FROM LIFE_INFO_COMMENT L
         WHERE LIFE_MESSAGE_ID = #{lifeMessageId}
     </select>
