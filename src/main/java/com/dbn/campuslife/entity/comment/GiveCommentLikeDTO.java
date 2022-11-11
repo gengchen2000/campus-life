@@ -4,7 +4,7 @@ import com.dbn.campuslife.util.CheckPropertyUtil;
 import com.dbn.campuslife.util.NatureUtil;
 import io.swagger.annotations.ApiModelProperty;
 
-public class ListCommentDTO extends CheckPropertyUtil implements NatureUtil<ListCommentDTO> {
+public class GiveCommentLikeDTO extends CheckPropertyUtil implements NatureUtil<GiveCommentLikeDTO> {
     /**
      * 用户ID
      */
@@ -14,7 +14,7 @@ public class ListCommentDTO extends CheckPropertyUtil implements NatureUtil<List
      * 评论ID
      */
     @ApiModelProperty(required = true)
-    private Integer lifeMessageId;
+    private Integer commentId;
 
     public Integer getUserId() {
         return userId;
@@ -24,11 +24,11 @@ public class ListCommentDTO extends CheckPropertyUtil implements NatureUtil<List
         this.userId = userId;
     }
 
-    public Integer getLifeMessageId() {
-        return lifeMessageId;
+    public Integer getCommentId() {
+        return commentId;
     }
 
-    public void setLifeMessageId(Integer lifeMessageId) {
-        this.lifeMessageId = lifeMessageId;
+    public void setCommentId(Integer commentId) {
+        this.commentId = commentId;
     }
 }

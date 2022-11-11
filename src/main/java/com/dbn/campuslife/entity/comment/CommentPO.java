@@ -46,6 +46,10 @@ public class CommentPO {
      * 头像名称
      */
     private String headImage;
+    /**
+     * 当前用户是否点赞
+     */
+    private boolean likeThis;
 
     public Integer getLikeNum() {
         return likeNum;
@@ -140,6 +144,14 @@ public class CommentPO {
 
     public void setHeadImage(String headImage) {
         this.headImage = headImage;
+    }
+
+    public boolean isLikeThis() {
+        return likeThis;
+    }
+
+    public void setLikeThis(boolean likeThis) {
+        this.likeThis = likeThis;
     }
 
     @Override

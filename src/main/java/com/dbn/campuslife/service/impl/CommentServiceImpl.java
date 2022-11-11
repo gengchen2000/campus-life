@@ -1,9 +1,6 @@
 package com.dbn.campuslife.service.impl;
 
-import com.dbn.campuslife.entity.comment.AddCommentDTO;
-import com.dbn.campuslife.entity.comment.CommentPO;
-import com.dbn.campuslife.entity.comment.DeleteCommentDTO;
-import com.dbn.campuslife.entity.comment.ListCommentDTO;
+import com.dbn.campuslife.entity.comment.*;
 import com.dbn.campuslife.entity.user.UserInfoPO;
 import com.dbn.campuslife.mapper.CommentMapper;
 import com.dbn.campuslife.service.ICommentService;
@@ -39,7 +36,10 @@ public class CommentServiceImpl implements ICommentService {
     public Result<CommentPO> listComments(ListCommentDTO listCommentDTO, UserInfoPO userInfo) {
 
         Map<Integer, CommentPO> map = new Hashtable<>();
-
+        /*添加登录人ID*/
+        listCommentDTO.setUserId(userInfo.getId());
+        /*检查必填字段是否为空*/
+        listCommentDTO.checkProperty();
         commentMapper.listComments(listCommentDTO).parallelStream().forEach(s -> {
             CommentPO comment = map.get(s.getId());
             if (comment != null) {
@@ -69,7 +69,7 @@ public class CommentServiceImpl implements ICommentService {
         /*优先按时间排序*/
         comments.sort((c1, c2) -> c2.getCreateTime().compareTo(c1.getCreateTime()));
         /*再按点赞数量排序*/
-        comments.sort(Comparator.comparingInt(CommentPO::getLikeNum));
+        comments.sort((c1, c2) -> c2.getLikeNum().compareTo(c1.getLikeNum()));
     }
 
     @Override
@@ -80,5 +80,23 @@ public class CommentServiceImpl implements ICommentService {
         commentDTO.checkProperty();
         /*删除*/
         commentMapper.deleteComment(commentDTO);
+    }
+
+    @Override
+    public void giveLike(GiveCommentLikeDTO giveCommentLikeDTO, UserInfoPO userInfo) {
+        /*设置ID*/
+        giveCommentLikeDTO.setUserId(userInfo.getId());
+        giveCommentLikeDTO.checkProperty();
+        /*新增点赞*/
+        commentMapper.giveLike(giveCommentLikeDTO);
+    }
+
+    @Override
+    public void deleteLike(GiveCommentLikeDTO giveCommentLikeDTO, UserInfoPO userInfo) {
+
+        giveCommentLikeDTO.setUserId(userInfo.getId());
+        /*检查字段必填是否为空*/
+        giveCommentLikeDTO.checkProperty();
+        commentMapper.deleteLike(giveCommentLikeDTO);
     }
 }

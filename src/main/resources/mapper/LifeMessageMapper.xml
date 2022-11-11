@@ -38,8 +38,8 @@
         U.PERSON_NAME,
         U.HEAD_IMAGE,
         L.USER_ID,
-        (SELECT COUNT(*) FROM GIVE_LIKE WHERE L.ID = LIFE_MESSAGE_ID AND LIKE_TYPE = '0') LIKE_NUM,
-        (SELECT COUNT(*) FROM GIVE_LIKE WHERE L.ID = LIFE_MESSAGE_ID AND USER_ID = #{userId} AND LIKE_TYPE = '0') LIKE_THIS,
+        (SELECT COUNT(*) FROM GIVE_LIKE WHERE L.ID = LIKE_ID AND LIKE_TYPE = '0') LIKE_NUM,
+        (SELECT COUNT(*) FROM GIVE_LIKE WHERE L.ID = LIKE_ID AND USER_ID = #{userId} AND LIKE_TYPE = '0') LIKE_THIS,
         (SELECT COUNT(*) FROM LIFE_INFO_COMMENT WHERE L.ID = LIFE_MESSAGE_ID) COMMENT_NUM,
         ROW_NUMBER() OVER(ORDER BY
         <choose>
@@ -83,17 +83,17 @@
     </delete>
 
     <insert id="giveLike">
-        INSERT INTO GIVE_LIKE(USER_ID, LIFE_MESSAGE_ID, LIKE_TYPE)
+        INSERT INTO GIVE_LIKE(USER_ID, LIKE_ID, LIKE_TYPE)
         SELECT #{userId}
              , #{lifeMessageId}, '0' WHERE NOT EXISTS
-             (SELECT * FROM GIVE_LIKE G WHERE USER_ID = #{userId} AND LIFE_MESSAGE_ID = #{lifeMessageId} AND LIKE_TYPE = '0')
+             (SELECT * FROM GIVE_LIKE G WHERE USER_ID = #{userId} AND LIKE_ID = #{lifeMessageId} AND LIKE_TYPE = '0')
     </insert>
 
     <delete id="deleteLike">
         DELETE
         FROM GIVE_LIKE G
         WHERE USER_ID = #{userId}
-          AND LIFE_MESSAGE_ID = #{lifeMessageId} AND LIKE_TYPE = '0'
+          AND LIKE_ID = #{lifeMessageId} AND LIKE_TYPE = '0'
     </delete>
 
 

@@ -37,19 +37,21 @@
         <result property="commentInfo" column="COMMENT_INFO"/>
         <result property="likeNum" column="LIKE_NUM"/>
         <result property="headImage" column="HEAD_IMAGE"/>
+        <result property="likeThis" column="LIKE_THIS"/>
     </resultMap>
 
     <select id="listComments" resultMap="Comment">
         SELECT ID,
                USER_ID,
-               (SELECT PERSON_NAME FROM USER WHERE ID = L.USER_ID)        PERSON_NAME,
-               (SELECT HEAD_IMAGE FROM USER WHERE ID = L.USER_ID)         HEAD_IMAGE,
-               (SELECT PERSON_NAME FROM USER WHERE ID = L.REPLAY_USER_ID) REPLAY_PERSON_NAME,
-               (CASE WHEN REPLAY_USER_ID IS NULL THEN 0 ELSE 1 END)       REPLAY,
+               (SELECT PERSON_NAME FROM USER WHERE ID = L.USER_ID)                                          PERSON_NAME,
+               (SELECT HEAD_IMAGE FROM USER WHERE ID = L.USER_ID)                                           HEAD_IMAGE,
+               (SELECT PERSON_NAME FROM USER WHERE ID = L.REPLAY_USER_ID)                                   REPLAY_PERSON_NAME,
+               (CASE WHEN REPLAY_USER_ID IS NULL THEN 0 ELSE 1 END)                                         REPLAY,
                PARENT_ID,
-               DATE_FORMAT(L.CREATE_TIME, '%Y-%m-%d %H:%i:%s')            CREATE_TIME,
+               DATE_FORMAT(L.CREATE_TIME, '%Y-%m-%d %H:%i:%s')                                              CREATE_TIME,
                COMMENT_INFO,
-               0                                                          LIKE_NUM
+               (SELECT COUNT(*) FROM GIVE_LIKE WHERE L.ID = LIKE_ID AND LIKE_TYPE = '1')                         LIKE_NUM,
+               (SELECT COUNT(*) FROM GIVE_LIKE WHERE LIKE_TYPE = '1' AND USER_ID = #{userId} AND L.ID = LIKE_ID) LIKE_THIS
         FROM LIFE_INFO_COMMENT L
         WHERE LIFE_MESSAGE_ID = #{lifeMessageId}
     </select>
@@ -59,6 +61,22 @@
         FROM LIFE_INFO_COMMENT
         WHERE ID = #{commentId}
           AND USER_ID = #{userId}
+    </delete>
+
+    <insert id="giveLike">
+        INSERT INTO GIVE_LIKE(USER_ID, LIKE_ID, LIKE_TYPE)
+        SELECT #{userId}
+             , #{commentId}
+             , '1' WHERE NOT EXISTS
+             (SELECT * FROM GIVE_LIKE G WHERE USER_ID = #{userId} AND LIKE_ID = #{commentId} AND LIKE_TYPE = '1')
+    </insert>
+
+    <delete id="deleteLike">
+        DELETE
+        FROM GIVE_LIKE G
+        WHERE USER_ID = #{userId}
+          AND LIKE_ID = #{commentId}
+          AND LIKE_TYPE = '1'
     </delete>
 
 </mapper>

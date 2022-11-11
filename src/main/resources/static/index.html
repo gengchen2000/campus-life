@@ -41,30 +41,22 @@
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-            <div class="row">
-                <nav class="navbar navbar-default">
-                    <div class="container-fluid">
-                        <div class="navbar-header">
-                            <a class="navbar-brand" href="/index.html">校园生活</a>
+            <div style="align-items: center; border-radius: 7px; display: flex;padding: 10px; border: silver solid 1px; margin: 15px 0">
+                <div style="flex: 1">
+                    <el-input prefix-icon="el-icon-search search" type="text" style="width: 200px; border-radius: 20px"></el-input>
+                </div>
+                <div style="flex: 1">
+                    <a href="/index.html" style="text-decoration: none; color: #777;" class="navbar-brand">校园生活</a>
+                </div>
+                <div style="flex: 1;"></div>
+                <div style="flex: 1; text-align: right">
+                    <a href="userInfo/index.html">
+                        <div class="block">
+                            <el-avatar :size="50"
+                                       :src="head.imageUrl + form.headImage"></el-avatar>
                         </div>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="dropdown">
-                                <template>
-                                    <el-row class="demo-avatar demo-basic">
-                                        <div class="demo-basic--circle">
-                                            <a href="userInfo/index.html">
-                                                <div class="block">
-                                                    <el-avatar :size="50"
-                                                               :src="head.imageUrl + form.headImage"></el-avatar>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </el-row>
-                                </template>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
+                    </a>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-3">
@@ -212,7 +204,9 @@
                                                 </span>
                                             </div>
                                             <div style="flex: 1">
-                                                <span class="el-icon-thumb mouse-move-number"></span>
+                                                <span class="el-icon-thumb mouse-move-number"
+                                                      :class="{'give-like': item.likeThis}"
+                                                      @click="giveCommentLike(item, index)">{{item.likeNum}}</span>
                                             </div>
                                         </div>
                                         <div style="flex: 1"></div>
@@ -245,7 +239,9 @@
                                                               @click="openTwo(comment, item, index)"></span>
                                                     </div>
                                                     <div style="flex: 1">
-                                                        <span class="el-icon-thumb mouse-move-number"></span>
+                                                        <span class="el-icon-thumb mouse-move-number"
+                                                              :class="{'give-like': comment.likeThis}"
+                                                              @click="giveCommentLike(comment, index)">{{comment.likeNum}}</span>
                                                     </div>
                                                 </div>
                                                 <div style="flex: 1"></div>
@@ -536,8 +532,44 @@
                 }).then(function (action) {
                     if (action.data.successful) {
                         that.listComment(index)
+                        index.commentNum -= 1
                     }
                 })
+            },
+            /*评论点赞*/
+            giveCommentLike(item, index) {
+                let that = this
+                if (!item.likeThis) {
+                    axios({
+                        method: 'post',
+                        url: '/comment/addCommentLike',
+                        data: {
+                            commentId: item.id
+                        }
+                    }).then(function (action) {
+                        if (action.data.successful) {
+                            item.likeThis = !item.likeThis
+                            item.likeNum += 1
+                            that.listComment(index)
+                        }
+                    });
+                } else {
+                    axios({
+                        method: 'post',
+                        url: '/comment/deleteCommentLike',
+                        data: {
+                            commentId: item.id
+                        }
+                    }).then(function (action) {
+                        if (action.data.successful) {
+                            item.likeThis = !item.likeThis
+                            item.likeNum -= 1
+                            that.listComment(index)
+                        }
+                    })
+                }
+
+
             },
         },
         watch: {

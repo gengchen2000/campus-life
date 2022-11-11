@@ -1,9 +1,7 @@
 package com.dbn.campuslife.service;
 
-import com.dbn.campuslife.entity.comment.AddCommentDTO;
-import com.dbn.campuslife.entity.comment.CommentPO;
-import com.dbn.campuslife.entity.comment.DeleteCommentDTO;
-import com.dbn.campuslife.entity.comment.ListCommentDTO;
+import com.dbn.campuslife.entity.comment.*;
+import com.dbn.campuslife.entity.message.GiveMessageLikeDTO;
 import com.dbn.campuslife.entity.user.UserInfoPO;
 import com.dbn.campuslife.util.Result;
 
@@ -24,4 +22,13 @@ public interface ICommentService {
 
     void deleteComment(DeleteCommentDTO commentDTO, UserInfoPO userInfo);
 
+    void giveLike(GiveCommentLikeDTO giveCommentLikeDTO, UserInfoPO userInfo);
+
+    /**
+     * 取消点赞
+     *
+     * @param giveCommentLikeDTO 评论ID
+     * @param userInfo           登录人信息
+     */
+    void deleteLike(GiveCommentLikeDTO giveCommentLikeDTO, UserInfoPO userInfo);
 }
