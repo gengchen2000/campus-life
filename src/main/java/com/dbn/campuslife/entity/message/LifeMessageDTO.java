@@ -22,6 +22,10 @@ public class LifeMessageDTO extends AbstractPageBO implements NatureUtil<LifeMes
      */
     public static final String USER_POWER = "USER";
     /**
+     * 查询某个用户的生活信息
+     */
+    public static final String ATTENTION_POWER = "ATTENTION";
+    /**
      * 查询方式
      */
     @ApiModelProperty(required = true)

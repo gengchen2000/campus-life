@@ -86,6 +86,14 @@ public class LifeMessageServiceImpl implements ILifeMessageService {
         return getLifeMessagePOResult(lifeMessageDTO, userInfo);
     }
 
+    @Override
+    public Result<LifeMessagePO> listAttentionLifeMessage(LifeMessageDTO lifeMessageDTO, UserInfoPO userInfo) {
+        lifeMessageDTO.setType(LifeMessageDTO.ATTENTION_POWER);
+        lifeMessageDTO.setId(userInfo.getId());
+
+        return getLifeMessagePOResult(lifeMessageDTO, userInfo);
+    }
+
     @NotNull
     private Result<LifeMessagePO> getLifeMessagePOResult(LifeMessageDTO lifeMessageDTO, UserInfoPO userInfo) {
         /*检查属性*/

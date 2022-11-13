@@ -128,7 +128,7 @@
                         data: that.form
                     }).then(function (action) {
                         if (action.data.successful) {
-                            location.reload()
+                            location.href = '/userInfo/index.html'
                         } else {
                             that.$message({
                                 type: 'error',

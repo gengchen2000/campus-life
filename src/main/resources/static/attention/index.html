@@ -5,12 +5,12 @@
     <title>校园生活</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-    <script src="vue/js/vue.min.js"></script>
+    <script src="/vue/js/vue.min.js"></script>
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <!-- 引入组件库 -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-    <script src="vue/js/axios.min.js"></script>
+    <script src="/vue/js/axios.min.js"></script>
 </head>
 <style>
     .input_border input {
@@ -84,12 +84,12 @@
                     <div class="btn-group" role="group" style="width: 100%; padding: 5px; background-color: #FFFFFF">
                         <button type="button" class="btn btn-default"
                                 style="text-align: center;width: 100%; border: #FFFFFF solid 0;font-size: 20px">
-                            <a href="/index.html" style="text-decoration: none; color: #ec971f;"><span
-                                    class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;&nbsp;&nbsp;最新分享</a>
+                            <a href="/index.html" style="text-decoration: none; color: #000000"><span
+                                    class="el-icon-user"></span>&nbsp;&nbsp;&nbsp;&nbsp;最新分享</a>
                         </button>
                         <button type="button" class="btn btn-default"
                                 style="text-align: center;width: 100%; border: #FFFFFF solid 0;font-size: 20px">
-                            <a href="/attention/index.html" style="text-decoration: none; color: #000000"><span
+                            <a href="/attention/index.html" style="text-decoration: none; color: #ec971f;"><span
                                     class="el-icon-star-off"></span>&nbsp;&nbsp;&nbsp;&nbsp;特别关注</a>
                         </button>
                         <button type="button" class="btn btn-default"
@@ -105,43 +105,6 @@
                     </div>
                 </div>
                 <div class="col-md-9">
-                    <div style="border: silver solid 1px;padding: 5px;border-radius: 3px; background-color: #FFFFFF">
-                        <el-input
-                                style="font-size: 15px; "
-                                type="textarea"
-                                placeholder="请输入内容"
-                                v-model="textarea"
-                                :rows="rows"
-                                show-word-limit>
-                        </el-input>
-                        <br/>
-                        <div style="display: flex; margin-top: 4px">
-                            <div style="flex: 1;"></div>
-                            <div style="flex: 1;"></div>
-                            <div style="flex: 1;"></div>
-                            <div style="flex: 1;"></div>
-                            <div style="flex: 1;"></div>
-                            <div style="flex: 1; ">
-                                <template>
-                                    <el-select class="input_border" v-model="value" style="width: 130px">
-                                        <el-option
-                                                v-for="item in options"
-                                                :key="item.value"
-                                                :label="item.label"
-                                                :value="item.value">
-                                        </el-option>
-                                    </el-select>
-                                </template>
-                            </div>
-                            <div style="flex: 1; text-align: right">
-                                <el-row>
-                                    <el-button style="font-size: 12px" type="warning" :disabled="read" round
-                                               @click="onSubmit">发送
-                                    </el-button>
-                                </el-row>
-                            </div>
-                        </div>
-                    </div>
                     <br/>
                     <div v-for="(index, key) in lifeMessage"
                          style="background-color: #FFFFFF; border-radius: 5px; margin-top: 20px; padding: 20px">
@@ -301,7 +264,7 @@
         el: '#root',
         data: {
             head: {
-                imageUrl: 'image/'
+                imageUrl: '/image/'
             },
             form: {
                 personName: '',
@@ -374,7 +337,7 @@
                 let that = this
                 axios({
                     method: 'post',
-                    url: '/lifeMessage/listLifeMessage',
+                    url: '/lifeMessage/listAttentionLifeMessage',
                     data: {
                         messageInfo: that.searchInfo !== '' ? that.searchInfo : null,
                         pageIndex: 1,
@@ -393,7 +356,7 @@
                 let that = this
                 axios({
                     method: 'post',
-                    url: '/lifeMessage/listLifeMessage',
+                    url: '/lifeMessage/listAttentionLifeMessage',
                     data: {
                         messageInfo: that.searchInfo !== '' ? that.searchInfo : null,
                         pageIndex: that.pageIndex + 1,

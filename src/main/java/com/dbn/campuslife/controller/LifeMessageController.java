@@ -54,6 +54,13 @@ public class LifeMessageController {
         }
     }
 
+    /**
+     * 获取特定用户的生活信息
+     *
+     * @param lifeMessageDTO 目标用户信息
+     * @param request        request请求
+     * @return 用户所有分享的生活信息
+     */
     @RequestMapping("/listUserLifeMessage")
     public JsonResult<Result<LifeMessagePO>> listUserLifeMessage(@RequestBody LifeMessageDTO lifeMessageDTO, HttpServletRequest request) {
         try {
@@ -61,6 +68,23 @@ public class LifeMessageController {
             return JsonResult.success(iLifeMessageService.listUserLifeMessage(lifeMessageDTO, userInfo));
         } catch (Exception e) {
             return JsonResult.fail(LOGGER, "用户查询", e);
+        }
+    }
+
+    /**
+     * 获取关注人登录人信息
+     *
+     * @param lifeMessageDTO 分页条件
+     * @param request        request请求
+     * @return 关注人登录信息
+     */
+    @RequestMapping("/listAttentionLifeMessage")
+    public JsonResult<Result<LifeMessagePO>> listAttentionLifeMessage(@RequestBody LifeMessageDTO lifeMessageDTO, HttpServletRequest request) {
+        try {
+            UserInfoPO userInfo = (UserInfoPO) request.getSession().getAttribute("userInfo");
+            return JsonResult.success(iLifeMessageService.listAttentionLifeMessage(lifeMessageDTO, userInfo));
+        } catch (Exception e) {
+            return JsonResult.fail(LOGGER, "获取关注人生活信息", e);
         }
     }
 

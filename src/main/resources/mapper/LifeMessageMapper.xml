@@ -22,6 +22,9 @@
     </resultMap>
 
     <sql id="listLifeMessageCondition">
+        <if test="messageInfo != null">
+            (
+        </if>
         <if test="type == 'PUBLIC'">
             POWER = 1
             OR L.USER_ID = #{userId}
@@ -31,13 +34,19 @@
         <if test="type == 'GET_BY_ID'">
             AND L.ID = #{id}
         </if>
-        <if test="messageInfo != null">
-            AND MESSAGE_INFO LIKE CONCAT('%', #{messageInfo}, '%')
-        </if>
         <if test="type == 'USER'">
             AND (POWER = 1 OR POWER = 2 AND EXISTS (SELECT 1 FROM USER_ATTENTION WHERE L.USER_ID = ATTENTION_USER_ID AND
-            USER_ID = #{userId}) OR (POWER = 3 OR POWER = 2) AND #{userId} = #{targetUserId}) AND USER_ID =
+            USER_ID = #{userId}) OR (POWER = 4 OR POWER = 2) AND #{userId} = #{targetUserId}) AND USER_ID =
             #{targetUserId}
+        </if>
+        <if test="type == 'ATTENTION'">
+            AND EXISTS (SELECT * FROM USER_ATTENTION A WHERE L.USER_ID = ATTENTION_USER_ID AND #{userId} = A.USER_ID AND
+            L.POWER IN (1, 2))
+        </if>
+
+
+        <if test="messageInfo != null">
+            ) AND MESSAGE_INFO LIKE CONCAT('%', #{messageInfo}, '%')
         </if>
     </sql>
 
