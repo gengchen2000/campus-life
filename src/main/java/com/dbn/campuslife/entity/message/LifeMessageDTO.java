@@ -18,6 +18,10 @@ public class LifeMessageDTO extends AbstractPageBO implements NatureUtil<LifeMes
      */
     public static final String GET_BY_ID = "GET_BY_ID";
     /**
+     * 查询某个用户的生活信息
+     */
+    public static final String USER_POWER = "USER";
+    /**
      * 查询方式
      */
     @ApiModelProperty(required = true)
@@ -29,7 +33,11 @@ public class LifeMessageDTO extends AbstractPageBO implements NatureUtil<LifeMes
     @ApiModelProperty(required = true)
     private Integer userId;
 
+    private String messageInfo;
+
     private Integer id;
+
+    private Integer targetUserId;
 
     public String getType() {
         return type;
@@ -53,5 +61,21 @@ public class LifeMessageDTO extends AbstractPageBO implements NatureUtil<LifeMes
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getMessageInfo() {
+        return messageInfo;
+    }
+
+    public void setMessageInfo(String messageInfo) {
+        this.messageInfo = messageInfo;
+    }
+
+    public Integer getTargetUserId() {
+        return targetUserId;
+    }
+
+    public void setTargetUserId(Integer targetUserId) {
+        this.targetUserId = targetUserId;
     }
 }

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>校园生活</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <script src="../vue/js/vue.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="../vue/js/axios.min.js"></script>
+</head>
+<body>
+<div id="root" class="container-fluid">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div style="align-items: center; border-radius: 7px; display: flex;padding: 10px; border: silver solid 1px; margin: 15px 0">
+                <div style="flex: 1">
+                    <el-input prefix-icon="el-icon-search search" type="text"
+                              style="width: 200px; border-radius: 20px"></el-input>
+                </div>
+                <div style="flex: 1">
+                    <a href="/index.html" style="text-decoration: none; color: #777;" class="navbar-brand">校园生活</a>
+                </div>
+                <div style="flex: 1;"></div>
+                <div style="flex: 1; text-align: right">
+                    <a href="/userInfo/index.html">
+                        <div class="demo-image">
+                            <el-dropdown  @command="centerDialogVisible = true">
+                                <div class="block">
+                                    <el-avatar :size="50"
+                                               :src="head.imageUrl + form.headImage"></el-avatar>
+                                </div>
+                                <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item>注销</el-dropdown-item>
+                                </el-dropdown-menu>
+
+                            </el-dropdown>
+                        </div>
+                    </a>
+                    <el-dialog
+                            title="提示"
+                            :visible.sync="centerDialogVisible"
+                            width="30%"
+                            center>
+                        <span>是否取消登录</span>
+                        <span slot="footer" class="dialog-footer">
+                                <el-button @click="centerDialogVisible = false">取 消</el-button>
+                                <el-button type="primary" @click="removeUserInfo">确 定</el-button>
+                            </span>
+                    </el-dialog>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="btn-group" role="group" style="width: 100%">
+                        <button type="button" class="btn btn-default"
+                                style="text-align: center;width: 100%; border: #FFFFFF solid 0;font-size: 20px">
+                            <a style="text-decoration: none; color: #000000;" href="/userInfo/index.html"><span
+                                    class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;&nbsp;我的主页</a>
+                        </button>
+                        <button type="button" class="btn btn-default"
+                                style="text-align: center;width: 100%; border: #FFFFFF solid 0;font-size: 20px">
+                            <a style="text-decoration: none; color: #ec971f;" href="/userInfo/myInfo.html"><span
+                                    class="el-icon-document-copy"></span>&nbsp;&nbsp;&nbsp;&nbsp;我的信息</a>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <el-form ref="form" :model="form" label-width="80px">
+                        <el-form-item label="昵称">
+                            <el-input v-model="form.personName"></el-input>
+                        </el-form-item>
+                        <el-form-item label="年龄" prop="age">
+                            <el-input v-model.number="form.personAge" size="small"></el-input>
+                        </el-form-item>
+                        <el-form-item label="住址">
+                            <el-input v-model="form.personAddress"></el-input>
+                        </el-form-item>
+                        <el-form-item label="学校名称">
+                            <el-input v-model="form.schoolName"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="onSubmit">保存</el-button>
+                            <a href="/index.html">
+                                <el-button>取消</el-button>
+                            </a>
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript">
+    new Vue({
+        el: '#root',
+        data: {
+            head: {
+                imageUrl: '../image/'
+            },
+            form: {
+                personName: '',
+                personAge: 0,
+                personAddress: '',
+                schoolName: ''
+            },
+            tabPosition: 'left',
+            centerDialogVisible: false
+        },
+        methods: {
+            onSubmit() {
+                let that = this
+                this.$confirm('确定要保存所修改内容么?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    axios({
+                        method: "post",
+                        url: '/user/updateUserInfo',
+                        data: that.form
+                    }).then(function (action) {
+                        if (action.data.successful) {
+                            location.reload()
+                        } else {
+                            that.$message({
+                                type: 'error',
+                                message: action.data.message
+                            });
+                        }
+                    })
+
+                }).catch(() => {
+                })
+            },
+            removeUserInfo() {
+                axios({
+                    method: 'post',
+                    url: '/user/removeUserInfo'
+                }).then(function (action) {
+                    if (action.data.successful) {
+                        location.href = '/login/login.html'
+                    }
+                })
+            },
+        },
+        mounted() {
+            let that = this
+            axios({
+                method: "post",
+                url: "/user/getUserInfo"
+            }).then(function (action) {
+                that.form = action.data.data
+            })
+        },
+    })
+</script>
+</html>

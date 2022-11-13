@@ -9,6 +9,7 @@ import com.dbn.campuslife.exception.BusinessException;
 import com.dbn.campuslife.mapper.LifeMessageMapper;
 import com.dbn.campuslife.service.ILifeMessageService;
 import com.dbn.campuslife.util.Result;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -34,13 +35,7 @@ public class LifeMessageServiceImpl implements ILifeMessageService {
         /*放入查询方式*/
         lifeMessageDTO.setType(LifeMessageDTO.PUBLIC_POWER);
         /*检查属性*/
-        lifeMessageDTO.checkProperty();
-        /*分页*/
-        lifeMessageDTO.pageInit();
-        /*给定当前登录人ID*/
-        lifeMessageDTO.setUserId(userInfo.getId());
-
-        return new Result<>(lifeMessageMapper.listLifeMessage(lifeMessageDTO), lifeMessageMapper.countLifeMessage(lifeMessageDTO));
+        return getLifeMessagePOResult(lifeMessageDTO, userInfo);
     }
 
     @Override
@@ -79,4 +74,28 @@ public class LifeMessageServiceImpl implements ILifeMessageService {
 
         lifeMessageMapper.deleteLike(giveLikeDTO);
     }
+
+    @Override
+    public Result<LifeMessagePO> listUserLifeMessage(LifeMessageDTO lifeMessageDTO, UserInfoPO userInfo) {
+        /*设置查询方式为根据ID查询*/
+        lifeMessageDTO.setType(LifeMessageDTO.USER_POWER);
+        /*默认是当前登录人ID*/
+        if (lifeMessageDTO.getTargetUserId() == null) {
+            lifeMessageDTO.setTargetUserId(userInfo.getId());
+        }
+        return getLifeMessagePOResult(lifeMessageDTO, userInfo);
+    }
+
+    @NotNull
+    private Result<LifeMessagePO> getLifeMessagePOResult(LifeMessageDTO lifeMessageDTO, UserInfoPO userInfo) {
+        /*检查属性*/
+        lifeMessageDTO.checkProperty();
+        /*分页*/
+        lifeMessageDTO.pageInit();
+        /*给定当前登录人ID*/
+        lifeMessageDTO.setUserId(userInfo.getId());
+
+        return new Result<>(lifeMessageMapper.listLifeMessage(lifeMessageDTO), lifeMessageMapper.countLifeMessage(lifeMessageDTO));
+    }
+
 }

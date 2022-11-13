@@ -24,9 +24,20 @@
     <sql id="listLifeMessageCondition">
         <if test="type == 'PUBLIC'">
             POWER = 1
+            OR L.USER_ID = #{userId}
+            OR POWER = 2 AND EXISTS (SELECT 1 FROM USER_ATTENTION WHERE L.USER_ID = ATTENTION_USER_ID AND
+            USER_ID = #{userId})
         </if>
         <if test="type == 'GET_BY_ID'">
-            L.ID = #{id}
+            AND L.ID = #{id}
+        </if>
+        <if test="messageInfo != null">
+            AND MESSAGE_INFO LIKE CONCAT('%', #{messageInfo}, '%')
+        </if>
+        <if test="type == 'USER'">
+            AND (POWER = 1 OR POWER = 2 AND EXISTS (SELECT 1 FROM USER_ATTENTION WHERE L.USER_ID = ATTENTION_USER_ID AND
+            USER_ID = #{userId}) OR (POWER = 3 OR POWER = 2) AND #{userId} = #{targetUserId}) AND USER_ID =
+            #{targetUserId}
         </if>
     </sql>
 
@@ -85,7 +96,8 @@
     <insert id="giveLike">
         INSERT INTO GIVE_LIKE(USER_ID, LIKE_ID, LIKE_TYPE)
         SELECT #{userId}
-             , #{lifeMessageId}, '0' WHERE NOT EXISTS
+             , #{lifeMessageId}
+             , '0' WHERE NOT EXISTS
              (SELECT * FROM GIVE_LIKE G WHERE USER_ID = #{userId} AND LIKE_ID = #{lifeMessageId} AND LIKE_TYPE = '0')
     </insert>
 
@@ -93,7 +105,8 @@
         DELETE
         FROM GIVE_LIKE G
         WHERE USER_ID = #{userId}
-          AND LIKE_ID = #{lifeMessageId} AND LIKE_TYPE = '0'
+          AND LIKE_ID = #{lifeMessageId}
+          AND LIKE_TYPE = '0'
     </delete>
 
 

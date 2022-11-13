@@ -50,6 +50,14 @@ public class UserInfoPO implements NatureUtil<UserInfoPO> {
      * 头像
      */
     private String headImage;
+    /**
+     * 粉丝
+     */
+    private Integer fans;
+    /**
+     * 当前登录人是否关注
+     */
+    private boolean attention;
 
     public Integer getId() {
         return id;
@@ -137,6 +145,22 @@ public class UserInfoPO implements NatureUtil<UserInfoPO> {
 
     public void setHeadImage(String headImage) {
         this.headImage = headImage;
+    }
+
+    public Integer getFans() {
+        return fans;
+    }
+
+    public void setFans(Integer fans) {
+        this.fans = fans;
+    }
+
+    public boolean isAttention() {
+        return attention;
+    }
+
+    public void setAttention(boolean attention) {
+        this.attention = attention;
     }
 
     @Override

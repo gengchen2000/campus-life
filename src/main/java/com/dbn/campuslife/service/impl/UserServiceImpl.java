@@ -5,6 +5,7 @@ import com.dbn.campuslife.exception.BusinessException;
 import com.dbn.campuslife.mapper.UserMapper;
 import com.dbn.campuslife.service.IUserService;
 import com.dbn.campuslife.util.ClassChangeUtil;
+import com.dbn.campuslife.util.Result;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.springframework.util.DigestUtils;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -101,5 +103,33 @@ public class UserServiceImpl implements IUserService {
         userInfo = userMapper.getUserInfoByUserName(userInfo.getUsername());
         /*更新session里面的登录人信息*/
         request.getSession().setAttribute("userInfo", userInfo);
+    }
+
+    @Override
+    public Result<UserInfoPO> listAllUsers(ListUserDTO listUserDTO, UserInfoPO userInfo) {
+        /*设置当前登录人ID*/
+        listUserDTO.setUserId(userInfo.getId());
+        return new Result<>(userMapper.listAllUsers(listUserDTO), 0);
+    }
+
+    @Override
+    public void addAttentionUser(AttentionUserDTO attentionUserDTO, UserInfoPO userInfo) {
+        attentionUserDTO.setUserId(userInfo.getId());
+
+        userMapper.addAttentionUser(attentionUserDTO);
+    }
+
+    @Override
+    public void deleteAttentionUser(AttentionUserDTO attentionUserDTO, UserInfoPO userInfo) {
+
+        attentionUserDTO.setUserId(userInfo.getId());
+
+        userMapper.deleteAttentionUser(attentionUserDTO);
+    }
+
+    @Override
+    public UserInfoPO getTargetUser(TargetUserDTO targetUserDTO) {
+
+        return userMapper.getTargetUserInfo(targetUserDTO);
     }
 }

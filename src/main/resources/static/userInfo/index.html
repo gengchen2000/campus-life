@@ -12,71 +12,266 @@
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="../vue/js/axios.min.js"></script>
 </head>
-<body>
-<div id="root" class="container-fluid">
+<style>
+    .input_border input {
+        border: 0;
+        text-align: center;
+    }
+
+    .give-like {
+        color: #ec971f;
+        cursor: pointer;
+    }
+
+    .mouse-move:hover {
+        color: #ec971f;
+        cursor: pointer;
+        border-radius: 13px;
+        background-color: #f6e5a0;
+    }
+
+    .mouse-move-number:hover {
+        color: #ec971f;
+        cursor: pointer;
+    }
+
+    .outLogin {
+        position: absolute;
+        left: 62%;
+        /*width: 50%;*/
+        /*height: 200px;*/
+        /*background-color: #e56b6b;*/
+        z-index: 1;
+        top: 50px;
+        border-radius: 5px;
+        padding: 10px 20px;
+        background-color: #FFFFFF;
+    }
+
+</style>
+<body style="background-color: #f5f5f5">
+<div id="root" class="container-fluid" @click="changeShow">
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-            <div class="row">
-                <nav class="navbar navbar-default">
-                    <div class="container-fluid">
-                        <div class="navbar-header">
-                            <a class="navbar-brand" href="/index.html">校园生活</a>
-                        </div>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="dropdown">
-                                <template>
-                                    <el-row class="demo-avatar demo-basic">
-                                        <div class="demo-basic--circle">
-                                            <div class="block">
-                                                <el-avatar :size="50" :src="head.imageUrl + form.headImage"></el-avatar>
-                                            </div>
-                                        </div>
-                                    </el-row>
-                                </template>
-                            </li>
-                        </ul>
+            <div style="align-items: center; border-radius: 7px; display: flex;padding: 10px; border: silver solid 1px; margin: 15px 0">
+                <div style="flex: 1">
+                    <el-input v-model="searchInfo" @keyup.enter.native="search" prefix-icon="el-icon-search search"
+                              type="text"
+                              style="width: 200px; border-radius: 20px"></el-input>
+                </div>
+                <div style="flex: 1">
+                    <a href="/index.html" style="text-decoration: none; color: #777;" class="navbar-brand">校园生活</a>
+                </div>
+                <div style="flex: 1;"></div>
+                <div style="flex: 1; text-align: right; position: relative; display: flex">
+                    <div style="flex: 4"></div>
+                    <div style="flex: 1">
+                        <a href="/userInfo/index.html">
+                            <div class="demo-image">
+                                <el-dropdown  @command="centerDialogVisible = true">
+                                    <div class="block">
+                                        <el-avatar :size="50"
+                                                   :src="head.imageUrl + form.headImage"></el-avatar>
+                                    </div>
+                                    <el-dropdown-menu slot="dropdown">
+                                        <el-dropdown-item>注销</el-dropdown-item>
+                                    </el-dropdown-menu>
+
+                                </el-dropdown>
+                            </div>
+                        </a>
+                        <el-dialog
+                                title="提示"
+                                :visible.sync="centerDialogVisible"
+                                width="30%"
+                                center>
+                            <span>是否取消登录</span>
+                            <span slot="footer" class="dialog-footer">
+                                <el-button @click="centerDialogVisible = false">取 消</el-button>
+                                <el-button type="primary" @click="removeUserInfo">确 定</el-button>
+                            </span>
+                        </el-dialog>
                     </div>
-                </nav>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-3">
-                    <div class="btn-group" role="group" style="width: 100%">
+                    <div class="btn-group" role="group" style="width: 100%; padding: 5px; background-color: #FFFFFF">
                         <button type="button" class="btn btn-default"
                                 style="text-align: center;width: 100%; border: #FFFFFF solid 0;font-size: 20px">
                             <a style="text-decoration: none; color: #ec971f;" href="/userInfo/index.html"><span
                                     class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;&nbsp;我的主页</a>
                         </button>
+                        <button type="button" class="btn btn-default"
+                                style="text-align: center;width: 100%; border: #FFFFFF solid 0;font-size: 20px">
+                            <a style="text-decoration: none; color: #000000;" href="/userInfo/myInfo.html"><span
+                                    class="el-icon-document-copy"></span>&nbsp;&nbsp;&nbsp;&nbsp;我的信息</a>
+                        </button>
                     </div>
-                    <!--                    <div class="btn-toolbar" role="toolbar">-->
-                    <!--                        <div class="btn-group btn-group-lg">-->
-                    <!--                            &lt;!&ndash;                            <a href="" style="text-decoration: none; color: #ec971f;">&ndash;&gt;-->
-                    <!--                            <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我的主页-->
-                    <!--                            &lt;!&ndash;                            </a>&ndash;&gt;-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
                 </div>
                 <div class="col-md-9">
-                    <el-form ref="form" :model="form" label-width="80px">
-                        <el-form-item label="昵称">
-                            <el-input v-model="form.personName"></el-input>
-                        </el-form-item>
-                        <el-form-item label="年龄" prop="age">
-                            <el-input v-model.number="form.personAge" size="small"></el-input>
-                        </el-form-item>
-                        <el-form-item label="住址">
-                            <el-input v-model="form.personAddress"></el-input>
-                        </el-form-item>
-                        <el-form-item label="学校名称">
-                            <el-input v-model="form.schoolName"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="onSubmit">保存</el-button>
-                            <a href="/index.html">
-                                <el-button>取消</el-button>
-                            </a>
-                        </el-form-item>
-                    </el-form>
+                    <div style="background-color: #FFFFFF;border-radius: 20px">
+                        <el-form ref="form" :model="targetUserInfo" label-width="150px">
+                            <el-form-item label="昵称：">
+                                <span>{{targetUserInfo.personName}}</span>
+                            </el-form-item>
+                            <el-form-item label="年龄：" prop="age">
+                                <span>{{targetUserInfo.personAge}}</span>
+                            </el-form-item>
+                            <el-form-item label="住址：">
+                                <span>{{targetUserInfo.personAddress}}</span>
+                            </el-form-item>
+                            <el-form-item label="学校名称：">
+                                <span>{{targetUserInfo.schoolName}}</span>
+                            </el-form-item>
+                        </el-form>
+                    </div>
+                    <div v-for="(index, key) in lifeMessage"
+                         style="background-color: #FFFFFF; border-radius: 5px; margin-top: 20px; padding: 20px">
+                        <div style="display: flex">
+                            <div style="flex: 1">
+                                <div class="block">
+                                    <el-avatar :size="50" :src="head.imageUrl + index.headImage"></el-avatar>
+                                </div>
+                            </div>
+                            <div style="flex: 7">
+                                <p><b>{{index.personName}}</b></p>
+                                <p style="color: #939393">{{index.createTime}}</p>
+                            </div>
+                            <div style="flex: 1">
+                                <div style="text-align: center" v-show="index.userId === form.id">
+                                    <span @click.stop="changeStyle(index)" class="el-icon-arrow-down mouse-move"
+                                          style="padding: 3px; font-size: 17px;"></span>
+                                    <div v-show="index.show" @click="deleteMessage(index)"
+                                         style="position: relative;border: #939393 solid 1px; background-color: #FFFFFF;border-radius: 10px;top: 5px;text-align: center;padding: 5px; cursor: pointer">
+                                        删除
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="font-size: 16px">
+                            {{space}}{{index.messageInfo}}
+                        </p>
+                        <div style="display: flex; font-size: 16px">
+                            <div style="flex: 1; text-align: center;">
+                                <span class="el-icon-s-promotion mouse-move-number">0</span>
+                            </div>
+                            <div style="flex: 1; text-align: center" @click="showComment(index)">
+                                <span class="el-icon-chat-dot-round mouse-move-number">{{index.commentNum}}</span>
+                            </div>
+                            <div style="flex: 1; text-align: center">
+                                <span class="el-icon-thumb mouse-move-number" :class="{'give-like': index.likeThis}"
+                                      @click="giveLike(index)">{{index.likeNum}}</span>
+                            </div>
+                        </div>
+                        <div v-if="index.comment">
+                            <div style="background-color: #f1efef; height: 1px; margin-top: 5px"></div>
+                            <div style="margin-top: 15px; display: flex; padding-left: 20px; align-items: center">
+                                <div style="flex: 1">
+                                    <div class="block">
+                                        <el-avatar :size="40"
+                                                   :src="head.imageUrl + form.headImage"></el-avatar>
+                                    </div>
+                                </div>
+                                <div style="flex: 10;">
+                                    <el-input
+                                            type="textarea"
+                                            autosize
+                                            placeholder="请输入内容"
+                                            v-model="index.textarea">
+                                    </el-input>
+                                </div>
+                                <div style="flex: 2; width: 100%; text-align: center;">
+                                    <el-row>
+                                        <el-button style="font-size: 14px;" type="warning" size="mini"
+                                                   :disabled="index.textarea.length <= 0"
+                                                   round
+                                                   @click="submitComment(index)">评论
+                                        </el-button>
+                                    </el-row>
+                                </div>
+                            </div>
+                            <div style="background-color: #f1efef; height: 1px; margin-top: 5px"></div>
+                            <div style="margin-top: 15px; display: flex; padding-left: 20px; align-items: flex-start"
+                                 v-for="item in index.comments">
+                                <div style="flex: 1">
+                                    <div class="block">
+                                        <el-avatar :size="38"
+                                                   :src="head.imageUrl + item.headImage"></el-avatar>
+                                    </div>
+                                </div>
+                                <div style="flex: 12;">
+                                    <div style=" word-break: break-all; padding-right: 10px">
+                                        <span style="color: #eb7350;"><b>{{item.personName}}</b></span>:
+                                        {{item.commentInfo}}
+                                    </div>
+                                    <div style="display: flex">
+                                        <div style="flex: 20;">
+                                            <p style="margin: 0 0 5px 0; color: #939393">
+                                                {{item.createTime}}
+                                            </p>
+                                        </div>
+                                        <div style="flex: 3; display: flex">
+                                            <div style="flex: 1">
+                                                <span class="el-icon-delete mouse-move-number"
+                                                      @click="deleteComment(item.id, index)"
+                                                      v-if="item.userId === form.id"></span>
+                                            </div>
+                                            <div style="flex: 1">
+                                                <span class="el-icon-chat-dot-round mouse-move-number"
+                                                      @click="openOne(item, index)">
+                                                </span>
+                                            </div>
+                                            <div style="flex: 1">
+                                                <span class="el-icon-thumb mouse-move-number"
+                                                      :class="{'give-like': item.likeThis}"
+                                                      @click="giveCommentLike(item, index)">{{item.likeNum}}</span>
+                                            </div>
+                                        </div>
+                                        <div style="flex: 1"></div>
+                                    </div>
+                                    <div style="border-left: #dfdfdf solid 1px; padding-left: 5px"
+                                         v-for="comment in item.children">
+                                        <div style="margin-top: 5px">
+                                            <div v-if="comment.replay">
+                                                <span style="color: #eb7350;">{{comment.personName}}</span>:回复<span
+                                                    style="color: #eb7350;">{{comment.replayPersonName}}</span>:{{comment.commentInfo}}
+                                            </div>
+                                            <div v-if="!comment.replay">
+                                                <span style="color: #eb7350;">{{comment.personName}}</span>:
+                                                {{comment.commentInfo}}
+                                            </div>
+                                            <div style="display: flex">
+                                                <div style="flex: 20;">
+                                                    <p style="margin: 0 0 5px 0; color: #939393">
+                                                        {{comment.createTime}}
+                                                    </p>
+                                                </div>
+                                                <div style="flex: 3; display: flex">
+                                                    <div style="flex: 1">
+                                                        <span @click="deleteComment(comment.id, index)"
+                                                              class="el-icon-delete mouse-move-number"
+                                                              v-if="comment.userId === form.id"></span>
+                                                    </div>
+                                                    <div style="flex: 1">
+                                                        <span class="el-icon-chat-dot-round mouse-move-number"
+                                                              @click="openTwo(comment, item, index)"></span>
+                                                    </div>
+                                                    <div style="flex: 1">
+                                                        <span class="el-icon-thumb mouse-move-number"
+                                                              :class="{'give-like': comment.likeThis}"
+                                                              @click="giveCommentLike(comment, index)">{{comment.likeNum}}</span>
+                                                    </div>
+                                                </div>
+                                                <div style="flex: 1"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -86,7 +281,17 @@
 
 </body>
 <script type="text/javascript">
-    new Vue({
+    let href = window.location.href
+    let targetUserId = ''
+    let number = href.indexOf('?');
+    if (number !== -1) {
+        let arr = href.substring(number + 1).split('=');
+        if (href.length > 1) {
+            targetUserId = arr[1]
+        }
+    }
+
+    let vm = new Vue({
         el: '#root',
         data: {
             head: {
@@ -98,44 +303,380 @@
                 personAddress: '',
                 schoolName: ''
             },
-            tabPosition: 'left'
+            /*发表文本信息*/
+            textarea: '',
+            rows: 3,
+            options: [{
+                value: 1,
+                label: '公开'
+            }, {
+                value: 2,
+                label: '粉丝'
+            }, {
+                value: 4,
+                label: '仅自己可见'
+            }],
+            value: 1,
+            read: true,
+            space: '　　',
+            lifeMessage: [],
+            pageIndex: null,
+            pageSize: null,
+            /*信息操作方式*/
+            messageOperate: [
+                {
+                    value: 1,
+                    label: '删除'
+                },
+            ],
+            messageValue: '',
+            a: '',
+            /*查询信息*/
+            searchInfo: '',
+            targetUserId: '',
+            targetUserInfo: {
+                personName: '',
+                personAge: 0,
+                personAddress: '',
+                schoolName: ''
+            },
+            /*showOutLogin*/
+            showOutLogin: false,
+            centerDialogVisible: false,
+            showOutLoginIng: false
         },
         methods: {
+            /*新增分享信息*/
             onSubmit() {
                 let that = this
-                this.$confirm('确定要保存所修改内容么?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
+                axios({
+                    method: 'post',
+                    url: '/lifeMessage/addLifeMessage',
+                    data: {
+                        messageInfo: this.textarea,
+                        power: this.value
+                    }
+                }).then(function (action) {
+                    if (action.data.successful) {
+                        that.$message({
+                            type: 'success',
+                            message: '发布成功'
+                        });
+                        that.textarea = ''
+                        that.listLifeMessage()
+                    } else {
+                        that.$message({
+                            type: 'error',
+                            message: action.data.message
+                        });
+                    }
+                })
+            },
+            /*首次查找生活信息*/
+            listLifeMessage() {
+                let that = this
+                axios({
+                    method: 'post',
+                    url: '/lifeMessage/listUserLifeMessage',
+                    data: {
+                        targetUserId: targetUserId === '' ? null : targetUserId,
+                        messageInfo: that.searchInfo !== '' ? that.searchInfo : null,
+                        pageIndex: 1,
+                        pageSize: 6
+                    }
+                }).then(function (action) {
+                    that.lifeMessage = action.data.data.data
+                    that.pageIndex = 3
+                    that.pageSize = 2
+                    that.setLifeMessageProperty()
+                })
+            },
+            /*懒加载更多生活信息*/
+            addListLifeMessage() {
+                let that = this
+                axios({
+                    method: 'post',
+                    url: '/lifeMessage/listUserLifeMessage',
+                    data: {
+                        targetUserId: that.form.id,
+                        messageInfo: that.searchInfo !== '' ? that.searchInfo : null,
+                        pageIndex: that.pageIndex + 1,
+                        pageSize: that.pageSize
+                    }
+                }).then(function (action) {
+                    if (action.data.successful) {
+                        /*请求成功并且请求的数据大于0*/
+                        if (action.data.data.data.length > 0) {
+                            // debugger
+                            that.lifeMessage = that.lifeMessage.concat(action.data.data.data);
+                            that.pageIndex += 1
+                            that.setLifeMessageProperty()
+                        }
+                    }
+                })
+            },
+            deleteMessage(index) {
+                let that = this
+                axios({
+                    method: 'post',
+                    url: '/lifeMessage/deleteLifeMessage',
+                    data: {
+                        id: index.id
+                    }
+                }).then(function (action) {
+                    that.listLifeMessage()
+                })
+            },
+            changeStyle(index) {
+                if (index.show) {
+                    index.show = false;
+                    return
+                }
+                this.changeShow();
+                index.show = true
+            },
+            setLifeMessageProperty() {
+                for (let i = 0; i < this.lifeMessage.length; i++) {
+                    if (i === 0 && !this.lifeMessage[0].comment) {
+                        // debugger
+                    }
+                    this.$set(this.lifeMessage[i], 'show', this.lifeMessage[i].show === undefined ? false : this.lifeMessage[i].show);
+                    this.$set(this.lifeMessage[i], 'textarea', this.lifeMessage[i].textarea === undefined ? '' : this.lifeMessage[i].textarea)
+                    this.$set(this.lifeMessage[i], 'comment', this.lifeMessage[i].comment === undefined ? false : this.lifeMessage[i].comment)
+                }
+            },
+            changeShow() {
+                for (let i = 0; i < this.lifeMessage.length; i++) {
+                    this.lifeMessage[i].show = false
+                }
+            },
+            /*点赞*/
+            giveLike(index) {
+                if (!index.likeThis) {
                     axios({
-                        method: "post",
-                        url: '/user/updateUserInfo',
-                        data: that.form
+                        method: 'post',
+                        url: '/lifeMessage/giveLike',
+                        data: {
+                            lifeMessageId: index.id
+                        }
                     }).then(function (action) {
                         if (action.data.successful) {
-                            location.reload()
-                        } else {
-                            that.$message({
-                                type: 'error',
-                                message: action.data.message
-                            });
+                            index.likeNum += 1
+                            index.likeThis = true
                         }
                     })
-
+                } else {
+                    axios({
+                        method: 'post',
+                        url: '/lifeMessage/deleteLike',
+                        data: {
+                            lifeMessageId: index.id
+                        }
+                    }).then(function (action) {
+                        index.likeNum -= 1
+                        index.likeThis = false
+                    })
+                }
+            },
+            /*添加评论*/
+            submitComment(index) {
+                let that = this
+                axios({
+                    method: 'post',
+                    url: '/comment/addComment',
+                    data: {
+                        lifeMessageId: index.id,
+                        commentInfo: index.textarea
+                    }
+                }).then(function (action) {
+                    if (action.data.successful) {
+                        index.textarea = ''
+                        that.listComment(index)
+                        index.commentNum += 1
+                    }
+                })
+            },
+            showComment(index) {
+                index.comment = !index.comment
+                this.listComment(index)
+            },
+            /*加载评论*/
+            listComment(index) {
+                let that = this
+                axios({
+                    method: 'post',
+                    url: '/comment/listComment',
+                    data: {
+                        lifeMessageId: index.id
+                    }
+                }).then(function (action) {
+                    if (action.data.successful) {
+                        that.$set(index, 'comments', action.data.data.data)
+                    }
+                })
+            },
+            /*打开一级评论窗口*/
+            openOne(item, index) {
+                let that = this
+                this.$prompt('', '回复@' + item.personName, {
+                    confirmButtonText: '回复',
+                    roundButton: true,
+                    showCancelButton: false,
+                    inputType: 'textarea'
+                }).then(({value}) => {
+                    axios({
+                        method: 'post',
+                        url: '/comment/addComment',
+                        data: {
+                            lifeMessageId: index.id,
+                            parentId: item.id,
+                            commentInfo: value,
+                        }
+                    }).then(function (action) {
+                        if (action.data.successful) {
+                            that.listComment(index)
+                            index.commentNum += 1
+                        }
+                    })
                 }).catch(() => {
+                });
+            },
+            /*打开耳机评论窗口*/
+            openTwo(comment, item, index) {
+                let that = this
+                this.$prompt('', '回复@' + comment.personName, {
+                    confirmButtonText: '回复',
+                    roundButton: true,
+                    showCancelButton: false,
+                    inputType: 'textarea'
+                }).then(({value}) => {
+                    axios({
+                        method: 'post',
+                        url: '/comment/addComment',
+                        data: {
+                            lifeMessageId: index.id,
+                            parentId: item.id,
+                            commentInfo: value,
+                            replayUserId: comment.userId
+                        }
+                    }).then(function (action) {
+                        if (action.data.successful) {
+                            that.listComment(index)
+                            index.commentNum += 1
+                        }
+                    })
+                }).catch(() => {
+                });
+            },
+            deleteComment(id, index) {
+                let that = this
+                axios({
+                    method: 'post',
+                    url: '/comment/deleteComment',
+                    data: {
+                        commentId: id
+                    }
+                }).then(function (action) {
+                    if (action.data.successful) {
+                        that.listComment(index)
+                        index.commentNum -= 1
+                    }
+                })
+            },
+            /*评论点赞*/
+            giveCommentLike(item, index) {
+                let that = this
+                if (!item.likeThis) {
+                    axios({
+                        method: 'post',
+                        url: '/comment/addCommentLike',
+                        data: {
+                            commentId: item.id
+                        }
+                    }).then(function (action) {
+                        if (action.data.successful) {
+                            item.likeThis = !item.likeThis
+                            item.likeNum += 1
+                            that.listComment(index)
+                        }
+                    });
+                } else {
+                    axios({
+                        method: 'post',
+                        url: '/comment/deleteCommentLike',
+                        data: {
+                            commentId: item.id
+                        }
+                    }).then(function (action) {
+                        if (action.data.successful) {
+                            item.likeThis = !item.likeThis
+                            item.likeNum -= 1
+                            that.listComment(index)
+                        }
+                    })
+                }
+            },
+            search() {
+                this.listLifeMessage()
+            },
+            /*注销*/
+            removeUserInfo() {
+                axios({
+                    method: 'post',
+                    url: '/user/removeUserInfo'
+                }).then(function (action) {
+                    if (action.data.successful) {
+                        location.href = '/login/login.html'
+                    }
                 })
             },
         },
         mounted() {
             let that = this
-            axios({
-                method: "post",
-                url: "/user/getUserInfo"
-            }).then(function (action) {
-                that.form = action.data.data
-            })
+
+            async function a() {
+                await axios({
+                    method: "post",
+                    url: "/user/getUserInfo"
+                }).then(function (action) {
+                    that.form = action.data.data
+                    that.targetUserInfo = that.form
+                })
+                that.listLifeMessage()
+            }
+
+            a()
+            if (targetUserId !== '') {
+                axios({
+                    method: "post",
+                    url: "/user/getTargetUserInfo",
+                    data: {
+                        targetUserId: targetUserId === '' ? null : targetUserId,
+                    }
+                }).then(function (action) {
+                    that.targetUserInfo = action.data.data
+                });
+            }
         },
-    })
+        watch: {
+            textarea() {
+                let length = this.textarea.length;
+                this.read = length <= 0;
+                if (length > 42 * 2) {
+                    this.rows = (length / 42) + 2
+                } else {
+                    this.rows = 3
+                }
+            },
+        },
+
+    });
+    window.onscroll = function () {
+        let doc = document.documentElement;
+        /*判断滚动条是否到底部*/
+        if (doc.scrollHeight - doc.clientHeight < doc.scrollTop + 10) {
+            vm.addListLifeMessage()
+        }
+    }
 </script>
 </html>

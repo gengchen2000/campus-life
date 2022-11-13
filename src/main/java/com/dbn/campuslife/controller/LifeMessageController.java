@@ -54,6 +54,16 @@ public class LifeMessageController {
         }
     }
 
+    @RequestMapping("/listUserLifeMessage")
+    public JsonResult<Result<LifeMessagePO>> listUserLifeMessage(@RequestBody LifeMessageDTO lifeMessageDTO, HttpServletRequest request) {
+        try {
+            UserInfoPO userInfo = (UserInfoPO) request.getSession().getAttribute("userInfo");
+            return JsonResult.success(iLifeMessageService.listUserLifeMessage(lifeMessageDTO, userInfo));
+        } catch (Exception e) {
+            return JsonResult.fail(LOGGER, "用户查询", e);
+        }
+    }
+
     /**
      * 删除消息
      *

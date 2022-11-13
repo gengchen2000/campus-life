@@ -19,6 +19,8 @@ public interface ILifeMessageService {
 
     Result<LifeMessagePO> listLifeMessage(LifeMessageDTO lifeMessageDTO, UserInfoPO userInfo);
 
+    Result<LifeMessagePO> listUserLifeMessage(LifeMessageDTO lifeMessageDTO, UserInfoPO userInfo);
+
     /**
      * 根据ID删除信息
      *

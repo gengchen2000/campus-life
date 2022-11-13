@@ -15,6 +15,8 @@
         <result property="createTime" column="CREATE_TIME"/>
         <result property="newAccount" column="NEW_ACCOUNT"/>
         <result property="headImage" column="HEAD_IMAGE"/>
+        <result property="fans" column="FANS"/>
+        <result property="attention" column="ATTENTION"/>
     </resultMap>
 
     <select id="existUsername" resultType="java.lang.Integer">
@@ -74,5 +76,43 @@
         </trim>
         WHERE ID = #{id}
     </update>
+
+    <insert id="addAttentionUser">
+        INSERT INTO USER_ATTENTION (USER_ID, ATTENTION_USER_ID)
+        VALUES (#{userId}, #{attentionUserId})
+    </insert>
+
+    <delete id="deleteAttentionUser">
+        DELETE
+        FROM USER_ATTENTION
+        WHERE USER_ID = #{userId}
+          AND ATTENTION_USER_ID = #{attentionUserId}
+    </delete>
+
+    <select id="listAllUsers" resultMap="UserInfo">
+        SELECT U.ID,
+        U.PERSON_NAME,
+        U.HEAD_IMAGE,
+        (SELECT COUNT(*) FROM USER_ATTENTION WHERE U.ID = ATTENTION_USER_ID) FANS,
+        (SELECT COUNT(*) FROM USER_ATTENTION WHERE ATTENTION_USER_ID = U.ID AND USER_ID = #{userId}) ATTENTION
+        FROM USER U
+        WHERE ID != #{userId}
+        <if test="type == 'MY_ATTENTION'">
+            AND EXISTS (SELECT * FROM USER_ATTENTION WHERE USER_ID = #{userId} AND ATTENTION_USER_ID = U.ID)
+        </if>
+        <if test="personName != null">
+            AND U.PERSON_NAME LIKE CONCAT('%', #{personName}, '%')
+        </if>
+    </select>
+
+    <select id="getTargetUserInfo" resultMap="UserInfo">
+        SELECT U.ID,
+               U.PERSON_NAME,
+               U.PERSON_AGE,
+               U.PERSON_ADDRESS,
+               U.SCHOOL_NAME
+        FROM USER U
+        WHERE U.ID = #{targetUserId}
+    </select>
 
 </mapper>

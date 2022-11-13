@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>校园生活</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <script src="../vue/js/vue.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="../vue/js/axios.min.js"></script>
+</head>
+<style>
+    .input_border input {
+        border: 0;
+        text-align: center;
+    }
+
+    .give-like {
+        color: #ec971f;
+        cursor: pointer;
+    }
+
+    .mouse-move:hover {
+        color: #ec971f;
+        cursor: pointer;
+        border-radius: 13px;
+        background-color: #f6e5a0;
+    }
+
+    .mouse-move-number:hover {
+        color: #ec971f;
+        cursor: pointer;
+    }
+
+</style>
+<body style="background-color: #f5f5f5">
+<div id="root" class="container-fluid">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div style="align-items: center; border-radius: 7px; display: flex;padding: 10px; border: silver solid 1px; margin: 15px 0">
+                <div style="flex: 1">
+                    <el-input prefix-icon="el-icon-search search" type="text" @keyup.enter.native="search" v-model="searchInfo"
+                              style="width: 200px; border-radius: 20px"></el-input>
+                </div>
+                <div style="flex: 1">
+                    <a href="/index.html" style="text-decoration: none; color: #777;" class="navbar-brand">校园生活</a>
+                </div>
+                <div style="flex: 1;"></div>
+                <div style="flex: 1; text-align: right">
+                    <a href="/userInfo/index.html">
+                        <div class="demo-image">
+                            <el-dropdown  @command="centerDialogVisible = true">
+                                <div class="block">
+                                    <el-avatar :size="50"
+                                               :src="head.imageUrl + form.headImage"></el-avatar>
+                                </div>
+                                <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item>注销</el-dropdown-item>
+                                </el-dropdown-menu>
+
+                            </el-dropdown>
+                        </div>
+                    </a>
+                    <el-dialog
+                            title="提示"
+                            :visible.sync="centerDialogVisible"
+                            width="30%"
+                            center>
+                        <span>是否取消登录</span>
+                        <span slot="footer" class="dialog-footer">
+                                <el-button @click="centerDialogVisible = false">取 消</el-button>
+                                <el-button type="primary" @click="removeUserInfo">确 定</el-button>
+                            </span>
+                    </el-dialog>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="btn-group" role="group" style="width: 100%">
+                        <button type="button" class="btn btn-default"
+                                style="text-align: center;width: 100%; border: #FFFFFF solid 0;font-size: 20px">
+                            <a href="/index.html" style="text-decoration: none; color: #000000;"><span
+                                    class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;&nbsp;&nbsp;最新分享</a>
+                        </button>
+                        <button type="button" class="btn btn-default"
+                                style="text-align: center;width: 100%; border: #FFFFFF solid 0;font-size: 20px">
+                            <a href="/user/index.html" style="text-decoration: none; color: #ec971f"><span
+                                    class="el-icon-user"></span>&nbsp;&nbsp;&nbsp;&nbsp;用户　　</a>
+                        </button>
+                        <button type="button" class="btn btn-default"
+                                style="text-align: center;width: 100%; border: #FFFFFF solid 0;font-size: 20px">
+                            <a href="/user/myAttention.html" style="text-decoration: none; color: #000000;"><span
+                                    class="el-icon-cherry"></span>&nbsp;&nbsp;&nbsp;&nbsp;关注　　</a>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div style="border-radius: 50px">
+                        <div style="background-color: #FFFFFF; align-items: center; display: flex; border-bottom: #eceaea solid 1px"
+                             v-for="user in allUserInfo">
+
+                            <div class="block" style="padding: 20px; flex: 2">
+                                <a :href="userInfoHref + user.id">
+                                    <el-avatar :size="70"
+                                               :src="head.imageUrl + user.headImage"></el-avatar>
+                                </a>
+                            </div>
+                            <div style="flex: 12">
+                                <div style="font-size: 18px"><b>{{user.personName}}</b></div>
+                                <div style="font-size: 16px; color: #939393">粉丝：{{user.fans}}</div>
+                            </div>
+                            <div style="flex: 5; text-align: center">
+                                <el-button type="warning" @click="attention(user)" round>
+                                    {{user.attention ? '取消关注' : '关注'}}
+                                </el-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript">
+    let vm = new Vue({
+        el: '#root',
+        data: {
+            head: {
+                imageUrl: '../image/'
+            },
+            form: {
+                personName: '',
+                personAge: 0,
+                personAddress: '',
+                schoolName: ''
+            },
+            allUserInfo: [],
+            searchInfo: '',
+            userInfoHref: '/userInfo/index.html?targetUserId=',
+            centerDialogVisible: false
+        },
+        methods: {
+            attention(index) {
+                let that = this
+                if (!index.attention) {
+                    axios({
+                        method: 'post',
+                        url: '/user/addAttentionUser',
+                        data: {
+                            attentionUserId: index.id
+                        }
+                    }).then(function (action) {
+                        that.getAllUser()
+                    })
+                } else {
+                    axios({
+                        method: 'post',
+                        url: '/user/deleteAttentionUser',
+                        data: {
+                            attentionUserId: index.id
+                        }
+                    }).then(function (action) {
+                        that.getAllUser()
+                    })
+                }
+            },
+            getAllUser() {
+                let that = this
+                axios({
+                    method: 'post',
+                    url: '/user/listAllUsers',
+                    data: {
+                        personName: that.searchInfo !== '' ? that.searchInfo : null
+                    }
+                }).then(function (action) {
+                    if (action.data.successful) {
+                        that.allUserInfo = action.data.data.data;
+                    }
+                })
+            },
+            search() {
+                this.getAllUser()
+            },
+            removeUserInfo() {
+                axios({
+                    method: 'post',
+                    url: '/user/removeUserInfo'
+                }).then(function (action) {
+                    if (action.data.successful) {
+                        location.href = '/login/login.html'
+                    }
+                })
+            },
+        },
+        watch: {},
+        mounted() {
+            let that = this
+            axios({
+                method: "post",
+                url: "/user/getUserInfo"
+            }).then(function (action) {
+                that.form = action.data.data
+            })
+            that.getAllUser()
+        },
+    })
+</script>
+</html>
