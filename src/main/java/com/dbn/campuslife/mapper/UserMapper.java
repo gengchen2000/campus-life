@@ -20,7 +20,7 @@ public interface UserMapper {
     Integer existUsername(String username);
 
     /**
-     * 新增用户信息
+     * 新增用户信息x
      *
      * @param registerUserDTO 用户信息
      */

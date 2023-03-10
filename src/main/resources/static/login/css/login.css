@@ -1,6 +1,6 @@
 body {
     background: url("../../image/b2f62f2187c904ffcaed90ba342f984d.jpg");
-    background-size: cover;
+    background-size: 100% 100%;
 }
 
 .button-register {
